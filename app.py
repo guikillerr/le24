@@ -301,6 +301,46 @@ criar_tabelas()
 
 
 # ==========================================================
+# FORMATAÇÃO DE DATA PARA EXIBIÇÃO
+# ==========================================================
+
+@app.template_filter(
+    "data_br"
+)
+def formatar_data_brasileira(
+    valor
+):
+
+    if not valor:
+
+        return ""
+
+
+    try:
+
+        data_objeto = datetime.strptime(
+            str(valor),
+            "%Y-%m-%d"
+        )
+
+
+        return data_objeto.strftime(
+            "%d/%m/%Y"
+        )
+
+
+    except (
+        ValueError,
+        TypeError
+    ):
+
+        # Caso o valor já esteja em outro formato,
+        # mantém o conteúdo original.
+
+        return valor
+
+
+# ==========================================================
 # HORÁRIOS
 # ==========================================================
 
