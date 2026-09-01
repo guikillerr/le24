@@ -9,6 +9,7 @@ from flask import (
 )
 
 import sqlite3
+import re
 
 from datetime import (
     datetime,
@@ -363,8 +364,7 @@ def buscar_horarios_disponiveis(
 # ==========================================================
 
 def criar_calendario(
-    barbeiro_id,
-    quantidade_dias=30
+    barbeiro_id
 ):
 
     calendario = []
@@ -397,17 +397,68 @@ def criar_calendario(
     ]
 
 
+    nomes_meses_completos = [
+        "JANEIRO",
+        "FEVEREIRO",
+        "MARÇO",
+        "ABRIL",
+        "MAIO",
+        "JUNHO",
+        "JULHO",
+        "AGOSTO",
+        "SETEMBRO",
+        "OUTUBRO",
+        "NOVEMBRO",
+        "DEZEMBRO"
+    ]
+
+
     hoje = date.today()
 
 
-    for numero in range(
-        quantidade_dias
-    ):
+    # Primeiro dia do mês seguinte.
 
-        dia = hoje + timedelta(
-            days=numero
+    if hoje.month == 12:
+
+        primeiro_proximo_mes = date(
+            hoje.year + 1,
+            1,
+            1
         )
 
+    else:
+
+        primeiro_proximo_mes = date(
+            hoje.year,
+            hoje.month + 1,
+            1
+        )
+
+
+    # Primeiro dia do mês depois do próximo.
+    # O calendário vai até o último dia do próximo mês.
+
+    if primeiro_proximo_mes.month == 12:
+
+        limite = date(
+            primeiro_proximo_mes.year + 1,
+            1,
+            1
+        )
+
+    else:
+
+        limite = date(
+            primeiro_proximo_mes.year,
+            primeiro_proximo_mes.month + 1,
+            1
+        )
+
+
+    dia = hoje
+
+
+    while dia < limite:
 
         data_texto = dia.strftime(
             "%Y-%m-%d"
@@ -456,6 +507,14 @@ def criar_calendario(
                     dia.month - 1
                 ],
 
+            "mes_nome":
+                nomes_meses_completos[
+                    dia.month - 1
+                ],
+
+            "mes_chave":
+                f"{dia.year}-{dia.month:02d}",
+
             "domingo":
                 domingo,
 
@@ -466,6 +525,11 @@ def criar_calendario(
                 len(horarios)
 
         })
+
+
+        dia += timedelta(
+            days=1
+        )
 
 
     return calendario
@@ -501,6 +565,109 @@ def index():
         barbeiros=barbeiros,
         servicos=servicos
     )
+
+
+# ==========================================================
+# VALIDAR TELEFONE BRASILEIRO
+# ==========================================================
+
+def normalizar_telefone(
+    telefone
+):
+
+    return re.sub(
+        r"\D",
+        "",
+        telefone or ""
+    )
+
+
+def telefone_brasileiro_plausivel(
+    telefone
+):
+
+    telefone = normalizar_telefone(
+        telefone
+    )
+
+
+    # Celular brasileiro com DDD:
+    # precisa possuir 11 números.
+
+    if len(telefone) != 11:
+
+        return False
+
+
+    ddds_validos = {
+
+        "11", "12", "13", "14",
+        "15", "16", "17", "18",
+        "19",
+
+        "21", "22", "24",
+        "27", "28",
+
+        "31", "32", "33", "34",
+        "35", "37", "38",
+
+        "41", "42", "43", "44",
+        "45", "46", "47", "48",
+        "49",
+
+        "51", "53", "54", "55",
+
+        "61", "62", "63", "64",
+        "65", "66", "67", "68",
+        "69",
+
+        "71", "73", "74", "75",
+        "77", "79",
+
+        "81", "82", "83", "84",
+        "85", "86", "87", "88",
+        "89",
+
+        "91", "92", "93", "94",
+        "95", "96", "97", "98",
+        "99"
+
+    }
+
+
+    if telefone[:2] not in ddds_validos:
+
+        return False
+
+
+    # Depois do DDD,
+    # celular brasileiro usa 9.
+
+    if telefone[2] != "9":
+
+        return False
+
+
+    # Evita coisas como:
+    # 11111111111
+
+    if len(set(telefone)) == 1:
+
+        return False
+
+
+    # Também evita o número local
+    # inteiro repetido.
+
+    numero_local = telefone[2:]
+
+
+    if len(set(numero_local)) == 1:
+
+        return False
+
+
+    return True
 
 
 # ==========================================================
@@ -558,6 +725,13 @@ def agendar():
         ).strip()
 
 
+        telefone_numeros = (
+            normalizar_telefone(
+                telefone
+            )
+        )
+
+
         servico_id = request.form.get(
             "servico"
         )
@@ -592,7 +766,27 @@ def agendar():
             )
 
 
-        # Confere se o horário continua livre.
+        # ==================================================
+        # VALIDAR TELEFONE
+        # ==================================================
+
+        if not telefone_brasileiro_plausivel(
+            telefone_numeros
+        ):
+
+            return redirect(
+                url_for(
+                    "agendar",
+                    servico=servico_id,
+                    data=data_agendamento,
+                    telefone_invalido="1"
+                )
+            )
+
+
+        # ==================================================
+        # CONFERE SE O HORÁRIO CONTINUA LIVRE
+        # ==================================================
 
         horarios_livres = (
             buscar_horarios_disponiveis(
@@ -642,7 +836,7 @@ def agendar():
             """, (
 
                 cliente,
-                telefone,
+                telefone_numeros,
                 barbeiro_id,
                 servico_id,
                 data_agendamento,
@@ -678,7 +872,7 @@ def agendar():
 
         session[
             "telefone_cliente"
-        ] = telefone
+        ] = telefone_numeros
 
 
         banco.close()
@@ -687,7 +881,8 @@ def agendar():
         return redirect(
             url_for(
                 "confirmacao",
-                agendamento_id=agendamento_id
+                agendamento_id=
+                    agendamento_id
             )
         )
 
@@ -720,14 +915,21 @@ def agendar():
     )
 
 
+    telefone_invalido = (
+        request.args.get(
+            "telefone_invalido"
+        )
+        ==
+        "1"
+    )
+
+
     calendario = criar_calendario(
-        barbeiro_id,
-        30
+        barbeiro_id
     )
 
 
     horarios = []
-
 
     dia_selecionado = None
 
@@ -794,6 +996,9 @@ def agendar():
         mostrar_lotado=
             mostrar_lotado,
 
+        telefone_invalido=
+            telefone_invalido,
+
         whatsapp=
             WHATSAPP_BARBEARIA
 
@@ -812,6 +1017,7 @@ def api_horarios():
         ""
     ).strip()
 
+
     try:
 
         data_objeto = datetime.strptime(
@@ -819,33 +1025,54 @@ def api_horarios():
             "%Y-%m-%d"
         ).date()
 
+
     except ValueError:
 
         return jsonify({
-            "erro": "Data inválida.",
-            "horarios": []
+
+            "erro":
+                "Data inválida.",
+
+            "horarios":
+                []
+
         }), 400
 
 
     if data_objeto < date.today():
 
         return jsonify({
-            "erro": "Não é possível agendar em uma data passada.",
-            "horarios": []
+
+            "erro":
+                "Não é possível agendar em uma data passada.",
+
+            "horarios":
+                []
+
         }), 400
 
 
     if data_objeto.weekday() == 6:
 
         return jsonify({
-            "erro": "A barbearia não abre aos domingos.",
-            "horarios": [],
-            "domingo": True,
-            "lotado": False
+
+            "erro":
+                "A barbearia não abre aos domingos.",
+
+            "horarios":
+                [],
+
+            "domingo":
+                True,
+
+            "lotado":
+                False
+
         })
 
 
     banco = conectar_banco()
+
 
     emerson = banco.execute("""
         SELECT id
@@ -855,28 +1082,45 @@ def api_horarios():
         "Emerson",
     )).fetchone()
 
+
     banco.close()
 
 
     if emerson is None:
 
         return jsonify({
-            "erro": "Barbeiro não encontrado.",
-            "horarios": []
+
+            "erro":
+                "Barbeiro não encontrado.",
+
+            "horarios":
+                []
+
         }), 404
 
 
-    horarios = buscar_horarios_disponiveis(
-        emerson["id"],
-        data_agendamento
+    horarios = (
+        buscar_horarios_disponiveis(
+            emerson["id"],
+            data_agendamento
+        )
     )
 
 
     return jsonify({
-        "data": data_agendamento,
-        "horarios": horarios,
-        "lotado": len(horarios) == 0,
-        "domingo": False
+
+        "data":
+            data_agendamento,
+
+        "horarios":
+            horarios,
+
+        "lotado":
+            len(horarios) == 0,
+
+        "domingo":
+            False
+
     })
 
 
@@ -1088,6 +1332,7 @@ def admin():
 # ==========================================================
 
 if __name__ == "__main__":
+
     app.run(
         host="0.0.0.0",
         port=5000

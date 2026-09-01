@@ -30,6 +30,7 @@ body {
         "Montserrat",
         Arial,
         sans-serif;
+    overflow-x: hidden;
 }
 
 
@@ -515,14 +516,7 @@ EMERSON
 
 .emerson-content h3 {
     font-family: Anton;
-
-    font-size:
-        clamp(
-            60px,
-            7vw,
-            80px
-        );
-
+    font-size: clamp(60px, 7vw, 80px);
     font-weight: normal;
 }
 
@@ -668,9 +662,14 @@ CABEÇALHO AGENDAMENTO
     padding: 45px 0;
 
     display: grid;
-    grid-template-columns: 70px 1fr;
+    grid-template-columns: 70px minmax(0, 1fr);
 
     border-top: 1px solid var(--border);
+}
+
+
+.booking-step > div {
+    min-width: 0;
 }
 
 
@@ -705,7 +704,7 @@ SERVIÇO AGENDAMENTO
 
 .service-options {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 15px;
 }
 
@@ -772,10 +771,6 @@ SERVIÇO AGENDAMENTO
 }
 
 
-/* ======================================================
-PREÇO DO SERVIÇO
-====================================================== */
-
 .python-service-card .service-price {
     margin-top: 10px;
 
@@ -792,13 +787,9 @@ PREÇO DO SERVIÇO
 
 
 .python-service-card.selected .service-price {
-    color: #ffffff;
+    color: white;
 }
 
-
-/* ======================================================
-CHECK DO SERVIÇO
-====================================================== */
 
 .python-check {
     width: 35px;
@@ -836,7 +827,7 @@ CHECK DO SERVIÇO
 
 
 /* ======================================================
-BARBEIRO NO AGENDAMENTO
+BARBEIRO AGENDAMENTO
 ====================================================== */
 
 .booking-barber-card {
@@ -900,22 +891,164 @@ BARBEIRO NO AGENDAMENTO
 
 
 /* ======================================================
-CALENDÁRIO
+ÁREA DO CALENDÁRIO
+====================================================== */
+
+.python-calendar-area {
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+}
+
+
+/* ======================================================
+SELETOR DE MÊS
+====================================================== */
+
+.month-selector {
+    width: 100%;
+    margin-bottom: 18px;
+    padding: 4px;
+
+    display: flex;
+    gap: 5px;
+
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    background: var(--card2);
+}
+
+
+.month-button {
+    min-height: 44px;
+    flex: 1;
+
+    padding: 0 18px;
+
+    border: 1px solid transparent;
+    border-radius: 5px;
+
+    background: transparent;
+    color: var(--gray);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+
+    transition: .2s;
+}
+
+
+.month-button:hover {
+    color: white;
+    border-color: #35414a;
+}
+
+
+.month-button.selected {
+    background:
+        rgba(
+            0,
+            140,
+            255,
+            .12
+        );
+
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+
+/* ======================================================
+NAVEGAÇÃO DO CALENDÁRIO
+====================================================== */
+
+.calendar-navigation {
+    width: 100%;
+    min-width: 0;
+
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) 46px;
+
+    gap: 10px;
+    align-items: stretch;
+}
+
+
+.calendar-arrow {
+    width: 46px;
+    min-width: 46px;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    background: var(--card);
+    color: white;
+
+    font-size: 34px;
+    font-weight: 300;
+
+    transition: .2s;
+}
+
+
+.calendar-arrow:hover {
+    border-color: var(--blue);
+    background:
+        rgba(
+            0,
+            140,
+            255,
+            .08
+        );
+
+    color: var(--blue);
+}
+
+
+/* ======================================================
+CALENDÁRIO HORIZONTAL
 ====================================================== */
 
 .python-calendar {
+    width: 100%;
+    min-width: 0;
+
     display: flex;
     gap: 10px;
 
     overflow-x: auto;
+    overflow-y: hidden;
 
-    padding: 5px 0 20px;
+    padding: 1px 1px 10px;
+
+    scroll-behavior: smooth;
+
+    scroll-snap-type: x proximity;
+
+    overscroll-behavior-x: contain;
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
 }
 
 
-.python-day {
-    flex: 0 0 90px;
+.python-calendar::-webkit-scrollbar {
+    display: none;
+}
 
+
+/* ======================================================
+DIAS
+====================================================== */
+
+.python-day {
+    flex: 0 0 88px;
+
+    width: 88px;
+    min-width: 88px;
     min-height: 135px;
 
     padding: 16px 8px;
@@ -936,7 +1069,12 @@ CALENDÁRIO
 
     appearance: none;
 
-    transition: .2s;
+    scroll-snap-align: start;
+
+    transition:
+        border-color .2s,
+        transform .2s,
+        background .2s;
 }
 
 
@@ -994,12 +1132,19 @@ CALENDÁRIO
 
 
 /* ======================================================
+DIA DE OUTRO MÊS
+====================================================== */
+
+.python-day.month-hidden {
+    display: none;
+}
+
+
+/* ======================================================
 LOTADO
 ====================================================== */
 
 .python-day.soldout {
-    position: relative;
-
     opacity: .55;
 
     border-color:
@@ -1032,8 +1177,33 @@ FECHADO
 }
 
 
+.python-day.closed:hover {
+    transform: none;
+    border-color: var(--border);
+}
+
+
 .python-day.closed em {
     color: var(--gray);
+}
+
+
+/* ======================================================
+DICA DE DESLIZE
+====================================================== */
+
+.calendar-swipe-hint {
+    display: none;
+
+    margin-top: 7px;
+
+    color: #59636a;
+
+    text-align: center;
+
+    font-size: 7px;
+    font-weight: 800;
+    letter-spacing: 1px;
 }
 
 
@@ -1132,44 +1302,12 @@ DIA LOTADO
 
 
 /* ======================================================
-PAINEL HORÁRIOS
-====================================================== */
-
-.python-times-panel {
-    margin-top: 30px;
-    padding: 25px;
-
-    border: 1px solid var(--border);
-
-    background: var(--card2);
-}
-
-
-.python-times-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-
-.python-times-header h3 {
-    margin-top: 5px;
-}
-
-
-.python-times-header > strong {
-    color: var(--green);
-    font-size: 10px;
-}
-
-
-/* ======================================================
 HORÁRIOS
 ====================================================== */
 
 .python-times-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 10px;
 }
 
@@ -1219,10 +1357,6 @@ HORÁRIOS
 }
 
 
-/* ======================================================
-CARREGANDO HORÁRIOS
-====================================================== */
-
 .python-times-loading {
     grid-column: 1 / -1;
 
@@ -1238,12 +1372,12 @@ CARREGANDO HORÁRIOS
 
 
 /* ======================================================
-DADOS CLIENTE
+CLIENTE
 ====================================================== */
 
 .customer-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     gap: 15px;
 }
@@ -1281,8 +1415,35 @@ DADOS CLIENTE
 }
 
 
+/* ======================================================
+ERRO DO TELEFONE
+====================================================== */
+
+.telefone-erro {
+    display: none;
+
+    margin-top: 8px;
+
+    color: var(--red);
+
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+
+.telefone-erro.visible {
+    display: block;
+}
+
+
+/* ======================================================
+CONFIRMAR
+====================================================== */
+
 .booking-submit {
     padding: 30px 0;
+
     text-align: right;
 }
 
@@ -1313,7 +1474,7 @@ DADOS CLIENTE
 
 
 /* ======================================================
-ELEMENTOS ESCONDIDOS DO AGENDAMENTO
+ESCONDER
 ====================================================== */
 
 .booking-hidden {
@@ -1322,7 +1483,7 @@ ELEMENTOS ESCONDIDOS DO AGENDAMENTO
 
 
 /* ======================================================
-ANIMAÇÃO DO AGENDAMENTO
+ANIMAÇÕES
 ====================================================== */
 
 #horarios-step,
@@ -1676,7 +1837,7 @@ td {
 
 
 /* ======================================================
-RESPONSIVO
+TABLET
 ====================================================== */
 
 @media (max-width: 800px) {
@@ -1718,8 +1879,24 @@ RESPONSIVO
         grid-template-columns: repeat(3, 1fr);
     }
 
+
+    .calendar-navigation {
+        grid-template-columns: 38px minmax(0, 1fr) 38px;
+        gap: 7px;
+    }
+
+
+    .calendar-arrow {
+        width: 38px;
+        min-width: 38px;
+    }
+
 }
 
+
+/* ======================================================
+CELULAR
+====================================================== */
 
 @media (max-width: 550px) {
 
@@ -1748,9 +1925,64 @@ RESPONSIVO
     }
 
 
+    /* ==============================================
+    AGENDAMENTO MOBILE
+    ============================================== */
+
+    .booking-header {
+        min-height: 72px;
+
+        padding:
+            8px
+            18px;
+    }
+
+
+    .booking-logo {
+        width: 60px;
+    }
+
+
+    .booking-back {
+        font-size: 9px;
+    }
+
+
+    .booking-container {
+        width: calc(100% - 28px);
+
+        margin:
+            35px
+            auto
+            80px;
+    }
+
+
+    .booking-title {
+        margin-bottom: 30px;
+
+        font-size: 43px;
+    }
+
+
     .booking-step {
         grid-template-columns: 1fr;
+
         gap: 15px;
+
+        padding:
+            32px
+            0;
+    }
+
+
+    .step-number {
+        font-size: 20px;
+    }
+
+
+    .booking-step h2 {
+        font-size: 27px;
     }
 
 
@@ -1760,26 +1992,207 @@ RESPONSIVO
     }
 
 
+    .python-service-card {
+        min-height: 96px;
+        padding: 18px;
+    }
+
+
+    /* ==============================================
+    BARBEIRO MOBILE
+    ============================================== */
+
     .booking-barber-card {
-        grid-template-columns: 80px 1fr 35px;
+        width: 100%;
+
+        grid-template-columns:
+            70px
+            minmax(0, 1fr)
+            34px;
+
+        gap: 12px;
+
+        padding: 12px;
     }
 
 
     .booking-barber-card img {
-        width: 80px;
-        height: 95px;
+        width: 70px;
+        height: 78px;
     }
 
+
+    .booking-barber-card strong {
+        font-size: 25px;
+    }
+
+
+    .selected-check {
+        width: 32px;
+        height: 32px;
+
+        font-size: 12px;
+    }
+
+
+    /* ==============================================
+    SELETOR DE MÊS MOBILE
+    ============================================== */
+
+    .month-selector {
+        margin-bottom: 13px;
+    }
+
+
+    .month-button {
+        min-height: 42px;
+
+        padding: 0 8px;
+
+        font-size: 9px;
+        letter-spacing: .7px;
+    }
+
+
+    /* ==============================================
+    CALENDÁRIO MOBILE
+    ============================================== */
+
+    .calendar-navigation {
+        display: block;
+
+        width: 100%;
+    }
+
+
+    .calendar-arrow {
+        display: none;
+    }
+
+
+    .python-calendar {
+        width: 100%;
+
+        gap: 8px;
+
+        padding-bottom: 8px;
+
+        scroll-snap-type: x mandatory;
+    }
+
+
+    .python-day {
+        /*
+        Aproximadamente 4 dias visíveis
+        dentro da tela.
+
+        O restante continua para o lado.
+        */
+
+        flex:
+            0
+            0
+            calc(
+                (
+                    100%
+                    -
+                    24px
+                )
+                /
+                4
+            );
+
+        width:
+            calc(
+                (
+                    100%
+                    -
+                    24px
+                )
+                /
+                4
+            );
+
+        min-width:
+            calc(
+                (
+                    100%
+                    -
+                    24px
+                )
+                /
+                4
+            );
+
+        min-height: 120px;
+
+        padding:
+            13px
+            5px;
+    }
+
+
+    .python-day > strong {
+        font-size: 28px;
+    }
+
+
+    .calendar-swipe-hint {
+        display: block;
+    }
+
+
+    /* ==============================================
+    HORÁRIOS MOBILE
+    ============================================== */
 
     .python-times-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0, 1fr)
+            );
     }
 
+
+    /* ==============================================
+    LOTADO MOBILE
+    ============================================== */
 
     .python-soldout-message {
         grid-template-columns: 1fr;
+
+        padding: 22px;
     }
 
+
+    .python-soldout-icon {
+        width: 50px;
+        height: 50px;
+
+        font-size: 28px;
+    }
+
+
+    /* ==============================================
+    BOTÃO CONFIRMAR MOBILE
+    ============================================== */
+
+    .booking-submit {
+        text-align: stretch;
+    }
+
+
+    .booking-submit button {
+        width: 100%;
+
+        min-height: 56px;
+    }
+
+
+    /* ==============================================
+    OUTROS
+    ============================================== */
 
     .emerson-content {
         padding: 35px 25px;

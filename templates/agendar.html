@@ -33,7 +33,6 @@
 
 <header class="booking-header">
 
-
     <a href="/">
 
         <img
@@ -54,7 +53,6 @@
 
     </a>
 
-
 </header>
 
 
@@ -62,16 +60,12 @@
 
 
     <span class="section-small">
-
         AGENDAMENTO
-
     </span>
 
 
     <h1 class="booking-title">
-
         RESERVE SEU HORÁRIO
-
     </h1>
 
 
@@ -82,6 +76,10 @@
         id="booking-form"
     >
 
+
+        <!-- ==============================================
+        VALORES ESCONDIDOS
+        ============================================== -->
 
         <input
             type="hidden"
@@ -99,9 +97,9 @@
         >
 
 
-        <!-- ==================================================
-        SERVIÇO
-        ================================================== -->
+        <!-- ==============================================
+        01 - SERVIÇO
+        ============================================== -->
 
         <section class="booking-step">
 
@@ -120,9 +118,7 @@
 
 
                 <p class="booking-description">
-
                     Primeiro selecione o serviço desejado.
-
                 </p>
 
 
@@ -170,7 +166,12 @@
 
                             <span class="service-price">
 
-                                R$ {{ "%.2f"|format(servico["preco"])|replace(".", ",") }}
+                                R$
+                                {{
+                                    "%.2f"|format(
+                                        servico["preco"]
+                                    )|replace(".", ",")
+                                }}
 
                             </span>
 
@@ -198,9 +199,9 @@
         </section>
 
 
-        <!-- ==================================================
-        BARBEIRO
-        ================================================== -->
+        <!-- ==============================================
+        02 - BARBEIRO
+        ============================================== -->
 
         <section class="booking-step">
 
@@ -236,16 +237,12 @@
 
 
                         <strong>
-
                             {{ emerson["nome"] }}
-
                         </strong>
 
 
                         <p>
-
                             Cortes · Degradê · Barba
-
                         </p>
 
 
@@ -266,9 +263,9 @@
         </section>
 
 
-        <!-- ==================================================
-        CALENDÁRIO
-        ================================================== -->
+        <!-- ==============================================
+        03 - DATA
+        ============================================== -->
 
         <section class="booking-step">
 
@@ -286,130 +283,61 @@
                 </h2>
 
 
-                <div class="python-calendar">
+                <p class="booking-description">
+
+                    Selecione o mês e depois escolha
+                    uma data disponível.
+
+                </p>
+
+
+                <!-- ======================================
+                SELETOR DE MÊS
+                ====================================== -->
+
+                <div
+                    class="month-selector"
+                    id="month-selector"
+                >
+
+                    {% set meses = namespace(lista=[]) %}
 
 
                     {% for dia in calendario %}
 
+                        {% if
+                            dia["mes_chave"]
+                            not in
+                            meses.lista
+                        %}
 
-                        {% if dia["domingo"] %}
-
-
-                        <div class="python-day closed">
-
-
-                            <span>
-                                {{ dia["semana"] }}
-                            </span>
-
-
-                            <strong>
-
-                                {{ "%02d"|format(dia["dia"]) }}
-
-                            </strong>
+                            {% set meses.lista =
+                                meses.lista
+                                +
+                                [
+                                    dia["mes_chave"]
+                                ]
+                            %}
 
 
-                            <small>
-                                {{ dia["mes"] }}
-                            </small>
+                            <button
+                                type="button"
+                                class="
+                                    month-button
 
+                                    {% if loop.first %}
+                                        selected
+                                    {% endif %}
+                                "
+                                data-month="{{ dia['mes_chave'] }}"
+                            >
 
-                            <em>
-                                FECHADO
-                            </em>
+                                {{ dia["mes_nome"] }}
 
-
-                        </div>
-
-
-                        {% elif dia["lotado"] %}
-
-
-                        <button
-                            type="button"
-                            class="python-day soldout"
-                            data-data="{{ dia['data'] }}"
-                            data-lotado="1"
-                        >
-
-
-                            <span>
-                                {{ dia["semana"] }}
-                            </span>
-
-
-                            <strong>
-
-                                {{ "%02d"|format(dia["dia"]) }}
-
-                            </strong>
-
-
-                            <small>
-                                {{ dia["mes"] }}
-                            </small>
-
-
-                            <em>
-                                LOTADO
-                            </em>
-
-
-                        </button>
-
-
-                        {% else %}
-
-
-                        <button
-                            type="button"
-                            class="
-                                python-day
-
-                                {% if
-                                    data_selecionada
-                                    ==
-                                    dia['data']
-                                %}
-                                    selected
-                                {% endif %}
-                            "
-                            data-data="{{ dia['data'] }}"
-                            data-lotado="0"
-                        >
-
-
-                            <span>
-                                {{ dia["semana"] }}
-                            </span>
-
-
-                            <strong>
-
-                                {{ "%02d"|format(dia["dia"]) }}
-
-                            </strong>
-
-
-                            <small>
-                                {{ dia["mes"] }}
-                            </small>
-
-
-                            <em>
-
-                                {{ dia["livres"] }}
-                                LIVRES
-
-                            </em>
-
-
-                        </button>
+                            </button>
 
 
                         {% endif %}
-
 
                     {% endfor %}
 
@@ -417,13 +345,218 @@
                 </div>
 
 
-                <!-- ==================================================
-                MENSAGEM DE DIA LOTADO
-                ================================================== -->
+                <!-- ======================================
+                CALENDÁRIO + SETAS
+                ====================================== -->
+
+                <div class="calendar-navigation">
+
+
+                    <button
+                        type="button"
+                        class="
+                            calendar-arrow
+                            calendar-arrow-left
+                        "
+                        id="calendar-left"
+                        aria-label="Datas anteriores"
+                    >
+
+                        ‹
+
+                    </button>
+
+
+                    <div
+                        class="python-calendar"
+                        id="python-calendar"
+                    >
+
+
+                        {% for dia in calendario %}
+
+
+                            {% if dia["domingo"] %}
+
+
+                            <div
+                                class="python-day closed"
+                                data-month="{{ dia['mes_chave'] }}"
+                            >
+
+
+                                <span>
+                                    {{ dia["semana"] }}
+                                </span>
+
+
+                                <strong>
+
+                                    {{
+                                        "%02d"|format(
+                                            dia["dia"]
+                                        )
+                                    }}
+
+                                </strong>
+
+
+                                <small>
+                                    {{ dia["mes"] }}
+                                </small>
+
+
+                                <em>
+                                    FECHADO
+                                </em>
+
+
+                            </div>
+
+
+                            {% elif dia["lotado"] %}
+
+
+                            <button
+                                type="button"
+                                class="python-day soldout"
+                                data-data="{{ dia['data'] }}"
+                                data-month="{{ dia['mes_chave'] }}"
+                                data-lotado="1"
+                            >
+
+
+                                <span>
+                                    {{ dia["semana"] }}
+                                </span>
+
+
+                                <strong>
+
+                                    {{
+                                        "%02d"|format(
+                                            dia["dia"]
+                                        )
+                                    }}
+
+                                </strong>
+
+
+                                <small>
+                                    {{ dia["mes"] }}
+                                </small>
+
+
+                                <em>
+                                    LOTADO
+                                </em>
+
+
+                            </button>
+
+
+                            {% else %}
+
+
+                            <button
+                                type="button"
+                                class="
+                                    python-day
+
+                                    {% if
+                                        data_selecionada
+                                        ==
+                                        dia['data']
+                                    %}
+                                        selected
+                                    {% endif %}
+                                "
+                                data-data="{{ dia['data'] }}"
+                                data-month="{{ dia['mes_chave'] }}"
+                                data-lotado="0"
+                            >
+
+
+                                <span>
+                                    {{ dia["semana"] }}
+                                </span>
+
+
+                                <strong>
+
+                                    {{
+                                        "%02d"|format(
+                                            dia["dia"]
+                                        )
+                                    }}
+
+                                </strong>
+
+
+                                <small>
+                                    {{ dia["mes"] }}
+                                </small>
+
+
+                                <em>
+
+                                    {{ dia["livres"] }}
+                                    LIVRES
+
+                                </em>
+
+
+                            </button>
+
+
+                            {% endif %}
+
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="
+                            calendar-arrow
+                            calendar-arrow-right
+                        "
+                        id="calendar-right"
+                        aria-label="Próximas datas"
+                    >
+
+                        ›
+
+                    </button>
+
+
+                </div>
+
+
+                <!-- ======================================
+                INDICAÇÃO MOBILE
+                ====================================== -->
+
+                <div class="calendar-swipe-hint">
+
+                    ← DESLIZE PARA VER MAIS DATAS →
+
+                </div>
+
+
+                <!-- ======================================
+                DIA LOTADO
+                ====================================== -->
 
                 <div
                     id="soldout-message"
-                    class="python-soldout-message booking-hidden"
+                    class="
+                        python-soldout-message
+                        booking-hidden
+                    "
                 >
 
 
@@ -436,9 +569,7 @@
 
 
                         <span class="section-small">
-
                             AGENDA COMPLETA
-
                         </span>
 
 
@@ -482,12 +613,15 @@
         </section>
 
 
-        <!-- ==================================================
-        HORÁRIO
-        ================================================== -->
+        <!-- ==============================================
+        04 - HORÁRIO
+        ============================================== -->
 
         <section
-            class="booking-step booking-hidden"
+            class="
+                booking-step
+                booking-hidden
+            "
             id="horarios-step"
         >
 
@@ -518,12 +652,15 @@
         </section>
 
 
-        <!-- ==================================================
-        DADOS DO CLIENTE
-        ================================================== -->
+        <!-- ==============================================
+        05 - CLIENTE
+        ============================================== -->
 
         <section
-            class="booking-step booking-hidden"
+            class="
+                booking-step
+                booking-hidden
+            "
             id="dados-step"
         >
 
@@ -575,12 +712,24 @@
                         <input
                             type="tel"
                             name="telefone"
-                            placeholder="(  ) _____-____"
+                            id="telefone-input"
+                            placeholder="(11) 99999-9999"
                             inputmode="numeric"
                             autocomplete="tel"
                             maxlength="15"
                             required
                         >
+
+
+                        <small
+                            id="telefone-erro"
+                            class="telefone-erro"
+                        >
+
+                            Digite um número de celular
+                            brasileiro válido.
+
+                        </small>
 
 
                     </div>
@@ -595,12 +744,15 @@
         </section>
 
 
-        <!-- ==================================================
-        BOTÃO FINAL
-        ================================================== -->
+        <!-- ==============================================
+        CONFIRMAR
+        ============================================== -->
 
         <div
-            class="booking-submit booking-hidden"
+            class="
+                booking-submit
+                booking-hidden
+            "
             id="booking-submit"
         >
 
@@ -615,9 +767,9 @@
         </div>
 
 
-        <!-- ==================================================
+        <!-- ==============================================
         INSTRUÇÃO
-        ================================================== -->
+        ============================================== -->
 
         <div
             class="python-instruction"
@@ -635,425 +787,210 @@
 </main>
 
 
-<!-- ==========================================================
-JAVASCRIPT DO AGENDAMENTO
-
-Aqui acontece a seleção sem refresh.
-O Flask continua responsável por validar e salvar o agendamento.
-========================================================== -->
-
 <script>
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
 
-    /* ======================================================
-    ELEMENTOS PRINCIPAIS
-    ====================================================== */
+        /* ==============================================
+        ELEMENTOS
+        ============================================== */
 
-    const servicoInput =
-        document.getElementById("servico-input");
-
-    const dataInput =
-        document.getElementById("data-input");
-
-    const servicoCards =
-        document.querySelectorAll(".python-service-card");
-
-    const dayButtons =
-        document.querySelectorAll(
-            ".python-day[data-data]"
-        );
-
-    const horariosStep =
-        document.getElementById("horarios-step");
-
-    const horariosGrid =
-        document.getElementById("horarios-grid");
-
-    const dadosStep =
-        document.getElementById("dados-step");
-
-    const bookingSubmit =
-        document.getElementById("booking-submit");
-
-    const instruction =
-        document.getElementById("booking-instruction");
-
-    const soldoutMessage =
-        document.getElementById("soldout-message");
-
-
-    /* ======================================================
-    ESCONDER HORÁRIOS E DADOS
-    ====================================================== */
-
-    function esconderEtapasFinais() {
-
-
-        horariosStep.classList.add(
-            "booking-hidden"
-        );
-
-
-        dadosStep.classList.add(
-            "booking-hidden"
-        );
-
-
-        bookingSubmit.classList.add(
-            "booking-hidden"
-        );
-
-
-        horariosGrid.innerHTML = "";
-
-
-    }
-
-
-    /* ======================================================
-    TEXTO DE INSTRUÇÃO
-    ====================================================== */
-
-    function atualizarInstrucao() {
-
-
-        if (!servicoInput.value) {
-
-
-            instruction.textContent =
-                "↑ Escolha primeiro um serviço.";
-
-
-            instruction.classList.remove(
-                "booking-hidden"
+        const bookingForm =
+            document.getElementById(
+                "booking-form"
             );
 
 
-            return;
+        const servicoInput =
+            document.getElementById(
+                "servico-input"
+            );
 
+
+        const dataInput =
+            document.getElementById(
+                "data-input"
+            );
+
+
+        const servicoCards =
+            document.querySelectorAll(
+                ".python-service-card"
+            );
+
+
+        const dayButtons =
+            document.querySelectorAll(
+                ".python-day[data-data]"
+            );
+
+
+        const allDays =
+            document.querySelectorAll(
+                ".python-day"
+            );
+
+
+        const monthButtons =
+            document.querySelectorAll(
+                ".month-button"
+            );
+
+
+        const calendario =
+            document.getElementById(
+                "python-calendar"
+            );
+
+
+        const setaEsquerda =
+            document.getElementById(
+                "calendar-left"
+            );
+
+
+        const setaDireita =
+            document.getElementById(
+                "calendar-right"
+            );
+
+
+        const horariosStep =
+            document.getElementById(
+                "horarios-step"
+            );
+
+
+        const horariosGrid =
+            document.getElementById(
+                "horarios-grid"
+            );
+
+
+        const dadosStep =
+            document.getElementById(
+                "dados-step"
+            );
+
+
+        const bookingSubmit =
+            document.getElementById(
+                "booking-submit"
+            );
+
+
+        const instruction =
+            document.getElementById(
+                "booking-instruction"
+            );
+
+
+        const soldoutMessage =
+            document.getElementById(
+                "soldout-message"
+            );
+
+
+        const telefoneInput =
+            document.getElementById(
+                "telefone-input"
+            );
+
+
+        const telefoneErro =
+            document.getElementById(
+                "telefone-erro"
+            );
+
+
+        /* ==============================================
+        ESTADO DO MÊS
+        ============================================== */
+
+        let mesAtual = null;
+
+
+        if (
+            monthButtons.length > 0
+        ) {
+
+            mesAtual =
+                monthButtons[0].dataset.month;
 
         }
 
 
-        if (!dataInput.value) {
+        /* ==============================================
+        ESCONDER ETAPAS FINAIS
+        ============================================== */
+
+        function esconderEtapasFinais() {
 
 
-            instruction.textContent =
-                "↑ Agora escolha um dia.";
-
-
-            instruction.classList.remove(
+            horariosStep.classList.add(
                 "booking-hidden"
             );
 
 
-            return;
-
-
-        }
-
-
-        instruction.classList.add(
-            "booking-hidden"
-        );
-
-
-    }
-
-
-    /* ======================================================
-    SELECIONAR SERVIÇO
-    ====================================================== */
-
-    function selecionarServico(card) {
-
-
-        servicoCards.forEach(function (item) {
-
-
-            item.classList.remove(
-                "selected"
+            dadosStep.classList.add(
+                "booking-hidden"
             );
 
 
-        });
-
-
-        card.classList.add(
-            "selected"
-        );
-
-
-        servicoInput.value =
-            card.dataset.servicoId;
-
-
-        soldoutMessage.classList.add(
-            "booking-hidden"
-        );
-
-
-        atualizarInstrucao();
-
-
-    }
-
-
-    /* ======================================================
-    MARCAR DIA VISUALMENTE
-    ====================================================== */
-
-    function selecionarDiaVisual(button) {
-
-
-        dayButtons.forEach(function (item) {
-
-
-            item.classList.remove(
-                "selected"
+            bookingSubmit.classList.add(
+                "booking-hidden"
             );
 
-
-        });
-
-
-        button.classList.add(
-            "selected"
-        );
-
-
-    }
-
-
-    /* ======================================================
-    CRIAR BOTÃO DE HORÁRIO
-    ====================================================== */
-
-    function criarHorario(horario) {
-
-
-        const label =
-            document.createElement("label");
-
-
-        label.className =
-            "python-time";
-
-
-        const input =
-            document.createElement("input");
-
-
-        input.type =
-            "radio";
-
-
-        input.name =
-            "horario";
-
-
-        input.value =
-            horario;
-
-
-        input.required =
-            true;
-
-
-        const span =
-            document.createElement("span");
-
-
-        span.textContent =
-            horario;
-
-
-        label.appendChild(
-            input
-        );
-
-
-        label.appendChild(
-            span
-        );
-
-
-        return label;
-
-
-    }
-
-
-    /* ======================================================
-    BUSCAR HORÁRIOS NO FLASK SEM REFRESH
-    ====================================================== */
-
-    async function carregarHorarios(data) {
-
-
-        horariosStep.classList.remove(
-            "booking-hidden"
-        );
-
-
-        dadosStep.classList.add(
-            "booking-hidden"
-        );
-
-
-        bookingSubmit.classList.add(
-            "booking-hidden"
-        );
-
-
-        horariosGrid.innerHTML =
-            '<div class="python-times-loading">Carregando horários...</div>';
-
-
-        try {
-
-
-            const resposta =
-                await fetch(
-                    "/api/horarios?data=" +
-                    encodeURIComponent(data),
-                    {
-
-                        headers: {
-
-                            "Accept":
-                                "application/json"
-
-                        }
-
-                    }
-                );
-
-
-            const resultado =
-                await resposta.json();
-
-
-            /* ==================================================
-            ERRO DA API
-            ================================================== */
-
-            if (!resposta.ok) {
-
-
-                throw new Error(
-
-                    resultado.erro ||
-
-                    "Não foi possível carregar os horários."
-
-                );
-
-
-            }
-
-
-            /* ==================================================
-            DIA LOTADO
-            ================================================== */
-
-            if (
-                resultado.lotado
-                ||
-                !resultado.horarios
-                ||
-                resultado.horarios.length === 0
-            ) {
-
-
-                horariosGrid.innerHTML =
-                    "";
-
-
-                horariosStep.classList.add(
-                    "booking-hidden"
-                );
-
-
-                dadosStep.classList.add(
-                    "booking-hidden"
-                );
-
-
-                bookingSubmit.classList.add(
-                    "booking-hidden"
-                );
-
-
-                soldoutMessage.classList.remove(
-                    "booking-hidden"
-                );
-
-
-                dataInput.value =
-                    "";
-
-
-                atualizarInstrucao();
-
-
-                return;
-
-
-            }
-
-
-            /* ==================================================
-            MONTA OS HORÁRIOS
-            ================================================== */
 
             horariosGrid.innerHTML =
                 "";
 
 
-            resultado.horarios.forEach(
-
-                function (horario) {
+        }
 
 
-                    horariosGrid.appendChild(
+        /* ==============================================
+        INSTRUÇÃO
+        ============================================== */
 
-                        criarHorario(
-                            horario
-                        )
-
-                    );
+        function atualizarInstrucao() {
 
 
-                }
-
-            );
+            if (!servicoInput.value) {
 
 
-            /* ==================================================
-            MOSTRA AS PRÓXIMAS ETAPAS
-            ================================================== */
-
-            horariosStep.classList.remove(
-                "booking-hidden"
-            );
+                instruction.textContent =
+                    "↑ Escolha primeiro um serviço.";
 
 
-            dadosStep.classList.remove(
-                "booking-hidden"
-            );
+                instruction.classList.remove(
+                    "booking-hidden"
+                );
 
 
-            bookingSubmit.classList.remove(
-                "booking-hidden"
-            );
+                return;
+
+            }
 
 
-            soldoutMessage.classList.add(
-                "booking-hidden"
-            );
+            if (!dataInput.value) {
+
+
+                instruction.textContent =
+                    "↑ Agora escolha um dia.";
+
+
+                instruction.classList.remove(
+                    "booking-hidden"
+                );
+
+
+                return;
+
+            }
 
 
             instruction.classList.add(
@@ -1064,113 +1001,429 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        catch (erro) {
+        /* ==============================================
+        SERVIÇO
+        ============================================== */
+
+        function selecionarServico(
+            card
+        ) {
 
 
-            horariosGrid.innerHTML =
+            servicoCards.forEach(
+                function (item) {
 
-                '<div class="python-times-loading">' +
 
-                erro.message +
+                    item.classList.remove(
+                        "selected"
+                    );
 
-                "</div>";
+
+                }
+            );
+
+
+            card.classList.add(
+                "selected"
+            );
+
+
+            servicoInput.value =
+                card.dataset.servicoId;
+
+
+            soldoutMessage.classList.add(
+                "booking-hidden"
+            );
+
+
+            atualizarInstrucao();
 
 
         }
 
 
-    }
+        servicoCards.forEach(
+            function (card) {
 
 
-    /* ======================================================
-    CLIQUE NOS SERVIÇOS
-    ====================================================== */
-
-    servicoCards.forEach(function (card) {
+                card.addEventListener(
+                    "click",
+                    function () {
 
 
-        card.addEventListener(
-
-            "click",
-
-            function () {
+                        selecionarServico(
+                            card
+                        );
 
 
-                selecionarServico(
-                    card
+                    }
                 );
 
 
             }
-
         );
 
 
-    });
+        /* ==============================================
+        FILTRAR CALENDÁRIO PELO MÊS
+        ============================================== */
+
+        function mostrarMes(
+            mes
+        ) {
 
 
-    /* ======================================================
-    CLIQUE NOS DIAS
-    ====================================================== */
-
-    dayButtons.forEach(function (button) {
+            mesAtual =
+                mes;
 
 
-        button.addEventListener(
+            monthButtons.forEach(
+                function (button) {
 
+
+                    if (
+                        button.dataset.month
+                        ===
+                        mes
+                    ) {
+
+                        button.classList.add(
+                            "selected"
+                        );
+
+                    }
+
+                    else {
+
+                        button.classList.remove(
+                            "selected"
+                        );
+
+                    }
+
+
+                }
+            );
+
+
+            allDays.forEach(
+                function (dia) {
+
+
+                    if (
+                        dia.dataset.month
+                        ===
+                        mes
+                    ) {
+
+                        dia.classList.remove(
+                            "month-hidden"
+                        );
+
+                    }
+
+                    else {
+
+                        dia.classList.add(
+                            "month-hidden"
+                        );
+
+                    }
+
+
+                }
+            );
+
+
+            calendario.scrollTo({
+
+                left: 0,
+
+                behavior:
+                    "smooth"
+
+            });
+
+
+        }
+
+
+        monthButtons.forEach(
+            function (button) {
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+
+                        mostrarMes(
+                            button.dataset.month
+                        );
+
+
+                    }
+                );
+
+
+            }
+        );
+
+
+        /* ==============================================
+        SETAS DO CALENDÁRIO
+        ============================================== */
+
+        function quantidadeScroll() {
+
+
+            return Math.max(
+                calendario.clientWidth * 0.75,
+                250
+            );
+
+        }
+
+
+        setaDireita.addEventListener(
             "click",
-
             function () {
 
 
-                /* ==============================================
-                PRECISA ESCOLHER SERVIÇO PRIMEIRO
-                ============================================== */
+                calendario.scrollBy({
 
-                if (!servicoInput.value) {
+                    left:
+                        quantidadeScroll(),
+
+                    behavior:
+                        "smooth"
+
+                });
 
 
-                    instruction.textContent =
-                        "↑ Escolha primeiro um serviço.";
+            }
+        );
 
 
-                    instruction.classList.remove(
-                        "booking-hidden"
+        setaEsquerda.addEventListener(
+            "click",
+            function () {
+
+
+                calendario.scrollBy({
+
+                    left:
+                        -quantidadeScroll(),
+
+                    behavior:
+                        "smooth"
+
+                });
+
+
+            }
+        );
+
+
+        /* ==============================================
+        SELEÇÃO VISUAL DO DIA
+        ============================================== */
+
+        function selecionarDiaVisual(
+            button
+        ) {
+
+
+            dayButtons.forEach(
+                function (item) {
+
+
+                    item.classList.remove(
+                        "selected"
                     );
 
 
-                    return;
+                }
+            );
+
+
+            button.classList.add(
+                "selected"
+            );
+
+
+        }
+
+
+        /* ==============================================
+        CRIAR HORÁRIO
+        ============================================== */
+
+        function criarHorario(
+            horario
+        ) {
+
+
+            const label =
+                document.createElement(
+                    "label"
+                );
+
+
+            label.className =
+                "python-time";
+
+
+            const input =
+                document.createElement(
+                    "input"
+                );
+
+
+            input.type =
+                "radio";
+
+
+            input.name =
+                "horario";
+
+
+            input.value =
+                horario;
+
+
+            input.required =
+                true;
+
+
+            const span =
+                document.createElement(
+                    "span"
+                );
+
+
+            span.textContent =
+                horario;
+
+
+            label.appendChild(
+                input
+            );
+
+
+            label.appendChild(
+                span
+            );
+
+
+            return label;
+
+
+        }
+
+
+        /* ==============================================
+        BUSCAR HORÁRIOS SEM REFRESH
+        ============================================== */
+
+        async function carregarHorarios(
+            data
+        ) {
+
+
+            horariosStep.classList.remove(
+                "booking-hidden"
+            );
+
+
+            dadosStep.classList.add(
+                "booking-hidden"
+            );
+
+
+            bookingSubmit.classList.add(
+                "booking-hidden"
+            );
+
+
+            horariosGrid.innerHTML =
+                '<div class="python-times-loading">Carregando horários...</div>';
+
+
+            try {
+
+
+                const resposta =
+                    await fetch(
+
+                        "/api/horarios?data="
+                        +
+                        encodeURIComponent(
+                            data
+                        ),
+
+                        {
+
+                            headers: {
+
+                                "Accept":
+                                    "application/json"
+
+                            }
+
+                        }
+
+                    );
+
+
+                const resultado =
+                    await resposta.json();
+
+
+                if (!resposta.ok) {
+
+
+                    throw new Error(
+
+                        resultado.erro
+                        ||
+                        "Não foi possível carregar os horários."
+
+                    );
 
 
                 }
 
 
-                soldoutMessage.classList.add(
-                    "booking-hidden"
-                );
-
-
-                /* ==============================================
-                DIA LOTADO
-                ============================================== */
-
                 if (
-                    button.dataset.lotado
+                    resultado.lotado
+                    ||
+                    !resultado.horarios
+                    ||
+                    resultado.horarios.length
                     ===
-                    "1"
+                    0
                 ) {
 
 
-                    dataInput.value =
+                    horariosGrid.innerHTML =
                         "";
 
 
-                    selecionarDiaVisual(
-                        button
+                    horariosStep.classList.add(
+                        "booking-hidden"
                     );
 
 
-                    esconderEtapasFinais();
+                    dadosStep.classList.add(
+                        "booking-hidden"
+                    );
+
+
+                    bookingSubmit.classList.add(
+                        "booking-hidden"
+                    );
 
 
                     soldoutMessage.classList.remove(
@@ -1178,75 +1431,551 @@ document.addEventListener("DOMContentLoaded", function () {
                     );
 
 
-                    instruction.classList.add(
-                        "booking-hidden"
-                    );
+                    dataInput.value =
+                        "";
 
 
                     return;
 
-
                 }
 
 
-                /* ==============================================
-                DIA DISPONÍVEL
-                ============================================== */
+                horariosGrid.innerHTML =
+                    "";
 
-                selecionarDiaVisual(
-                    button
+
+                resultado.horarios.forEach(
+                    function (horario) {
+
+
+                        horariosGrid.appendChild(
+
+                            criarHorario(
+                                horario
+                            )
+
+                        );
+
+
+                    }
                 );
 
 
-                dataInput.value =
-                    button.dataset.data;
+                horariosStep.classList.remove(
+                    "booking-hidden"
+                );
 
 
-                atualizarInstrucao();
+                dadosStep.classList.remove(
+                    "booking-hidden"
+                );
 
 
-                carregarHorarios(
-                    button.dataset.data
+                bookingSubmit.classList.remove(
+                    "booking-hidden"
+                );
+
+
+                soldoutMessage.classList.add(
+                    "booking-hidden"
+                );
+
+
+                instruction.classList.add(
+                    "booking-hidden"
                 );
 
 
             }
 
+            catch (erro) {
+
+
+                horariosGrid.innerHTML =
+
+                    '<div class="python-times-loading">'
+                    +
+                    erro.message
+                    +
+                    "</div>";
+
+
+            }
+
+
+        }
+
+
+        /* ==============================================
+        CLIQUE NO DIA
+        ============================================== */
+
+        dayButtons.forEach(
+            function (button) {
+
+
+                button.addEventListener(
+                    "click",
+                    function () {
+
+
+                        if (
+                            !servicoInput.value
+                        ) {
+
+
+                            instruction.textContent =
+                                "↑ Escolha primeiro um serviço.";
+
+
+                            instruction.classList.remove(
+                                "booking-hidden"
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        soldoutMessage.classList.add(
+                            "booking-hidden"
+                        );
+
+
+                        if (
+                            button.dataset.lotado
+                            ===
+                            "1"
+                        ) {
+
+
+                            dataInput.value =
+                                "";
+
+
+                            selecionarDiaVisual(
+                                button
+                            );
+
+
+                            esconderEtapasFinais();
+
+
+                            soldoutMessage.classList.remove(
+                                "booking-hidden"
+                            );
+
+
+                            instruction.classList.add(
+                                "booking-hidden"
+                            );
+
+
+                            return;
+
+                        }
+
+
+                        selecionarDiaVisual(
+                            button
+                        );
+
+
+                        dataInput.value =
+                            button.dataset.data;
+
+
+                        atualizarInstrucao();
+
+
+                        carregarHorarios(
+                            button.dataset.data
+                        );
+
+
+                    }
+                );
+
+
+            }
         );
 
 
-    });
+        /* ==============================================
+        TELEFONE
+        ============================================== */
+
+        const dddsValidos = [
+
+            "11", "12", "13", "14",
+            "15", "16", "17", "18",
+            "19",
+
+            "21", "22", "24",
+
+            "27", "28",
+
+            "31", "32", "33", "34",
+            "35", "37", "38",
+
+            "41", "42", "43", "44",
+            "45", "46", "47", "48",
+            "49",
+
+            "51", "53", "54", "55",
+
+            "61", "62", "63", "64",
+            "65", "66", "67", "68",
+            "69",
+
+            "71", "73", "74", "75",
+            "77", "79",
+
+            "81", "82", "83", "84",
+            "85", "86", "87", "88",
+            "89",
+
+            "91", "92", "93", "94",
+            "95", "96", "97", "98",
+            "99"
+
+        ];
 
 
-    /* ======================================================
-    CASO A PÁGINA JÁ TENHA SERVIÇO + DATA
-    ====================================================== */
-
-    if (
-        servicoInput.value
-        &&
-        dataInput.value
-    ) {
+        function somenteNumeros(
+            valor
+        ) {
 
 
-        carregarHorarios(
+            return valor.replace(
+                /\D/g,
+                ""
+            );
+
+
+        }
+
+
+        function telefoneValido(
+            valor
+        ) {
+
+
+            const numeros =
+                somenteNumeros(
+                    valor
+                );
+
+
+            if (
+                numeros.length
+                !==
+                11
+            ) {
+
+                return false;
+
+            }
+
+
+            const ddd =
+                numeros.substring(
+                    0,
+                    2
+                );
+
+
+            if (
+                !dddsValidos.includes(
+                    ddd
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                numeros.charAt(2)
+                !==
+                "9"
+            ) {
+
+                return false;
+
+            }
+
+
+            if (
+                /^(\d)\1+$/.test(
+                    numeros
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            const numeroLocal =
+                numeros.substring(2);
+
+
+            if (
+                /^(\d)\1+$/.test(
+                    numeroLocal
+                )
+            ) {
+
+                return false;
+
+            }
+
+
+            return true;
+
+
+        }
+
+
+        /* ==============================================
+        MÁSCARA DO TELEFONE
+        ============================================== */
+
+        telefoneInput.addEventListener(
+            "input",
+            function () {
+
+
+                let numero =
+                    somenteNumeros(
+                        telefoneInput.value
+                    );
+
+
+                numero =
+                    numero.substring(
+                        0,
+                        11
+                    );
+
+
+                if (
+                    numero.length > 7
+                ) {
+
+
+                    telefoneInput.value =
+
+                        "("
+                        +
+                        numero.substring(
+                            0,
+                            2
+                        )
+                        +
+                        ") "
+                        +
+                        numero.substring(
+                            2,
+                            7
+                        )
+                        +
+                        "-"
+                        +
+                        numero.substring(
+                            7,
+                            11
+                        );
+
+
+                }
+
+                else if (
+                    numero.length > 2
+                ) {
+
+
+                    telefoneInput.value =
+
+                        "("
+                        +
+                        numero.substring(
+                            0,
+                            2
+                        )
+                        +
+                        ") "
+                        +
+                        numero.substring(
+                            2
+                        );
+
+
+                }
+
+                else if (
+                    numero.length > 0
+                ) {
+
+
+                    telefoneInput.value =
+
+                        "("
+                        +
+                        numero;
+
+
+                }
+
+                else {
+
+
+                    telefoneInput.value =
+                        "";
+
+
+                }
+
+
+                telefoneErro.classList.remove(
+                    "visible"
+                );
+
+
+                telefoneInput.setCustomValidity(
+                    ""
+                );
+
+
+            }
+        );
+
+
+        /* ==============================================
+        VALIDAR ANTES DO ENVIO
+        ============================================== */
+
+        bookingForm.addEventListener(
+            "submit",
+            function (event) {
+
+
+                if (
+                    !telefoneValido(
+                        telefoneInput.value
+                    )
+                ) {
+
+
+                    event.preventDefault();
+
+
+                    telefoneErro.classList.add(
+                        "visible"
+                    );
+
+
+                    telefoneInput.setCustomValidity(
+                        "Digite um número de celular brasileiro válido."
+                    );
+
+
+                    telefoneInput.reportValidity();
+
+
+                    telefoneInput.focus();
+
+
+                    return;
+
+                }
+
+
+                telefoneErro.classList.remove(
+                    "visible"
+                );
+
+
+                telefoneInput.setCustomValidity(
+                    ""
+                );
+
+
+            }
+        );
+
+
+        /* ==============================================
+        INICIALIZAÇÃO DO CALENDÁRIO
+        ============================================== */
+
+        let mesInicial =
+            mesAtual;
+
+
+        const diaSelecionadoInicial =
+            document.querySelector(
+                ".python-day.selected"
+            );
+
+
+        if (
+            diaSelecionadoInicial
+        ) {
+
+
+            mesInicial =
+                diaSelecionadoInicial.dataset.month;
+
+
+        }
+
+
+        if (
+            mesInicial
+        ) {
+
+
+            mostrarMes(
+                mesInicial
+            );
+
+
+        }
+
+
+        /* ==============================================
+        CASO JÁ TENHA DATA SELECIONADA
+        ============================================== */
+
+        if (
+            servicoInput.value
+            &&
             dataInput.value
-        );
+        ) {
+
+
+            carregarHorarios(
+                dataInput.value
+            );
+
+
+        }
+
+        else {
+
+
+            atualizarInstrucao();
+
+
+        }
 
 
     }
-
-
-    else {
-
-
-        atualizarInstrucao();
-
-
-    }
-
-
-});
+);
 
 </script>
 
