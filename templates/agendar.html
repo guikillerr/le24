@@ -150,12 +150,7 @@
 
                         <span class="service-price">
 
-                            R$
-                            {{
-                                "%.2f"|format(
-                                    servico["preco"]
-                                )
-                            }}
+                            R$ {{ "%.2f"|format(servico["preco"])|replace(".", ",") }}
 
                         </span>
 
