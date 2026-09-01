@@ -4,7 +4,8 @@ from flask import (
     request,
     redirect,
     url_for,
-    session
+    session,
+    jsonify
 )
 
 import sqlite3
@@ -797,6 +798,86 @@ def agendar():
             WHATSAPP_BARBEARIA
 
     )
+
+
+# ==========================================================
+# API - HORÁRIOS SEM RECARREGAR A PÁGINA
+# ==========================================================
+
+@app.route("/api/horarios")
+def api_horarios():
+
+    data_agendamento = request.args.get(
+        "data",
+        ""
+    ).strip()
+
+    try:
+
+        data_objeto = datetime.strptime(
+            data_agendamento,
+            "%Y-%m-%d"
+        ).date()
+
+    except ValueError:
+
+        return jsonify({
+            "erro": "Data inválida.",
+            "horarios": []
+        }), 400
+
+
+    if data_objeto < date.today():
+
+        return jsonify({
+            "erro": "Não é possível agendar em uma data passada.",
+            "horarios": []
+        }), 400
+
+
+    if data_objeto.weekday() == 6:
+
+        return jsonify({
+            "erro": "A barbearia não abre aos domingos.",
+            "horarios": [],
+            "domingo": True,
+            "lotado": False
+        })
+
+
+    banco = conectar_banco()
+
+    emerson = banco.execute("""
+        SELECT id
+        FROM barbeiros
+        WHERE nome = ?
+    """, (
+        "Emerson",
+    )).fetchone()
+
+    banco.close()
+
+
+    if emerson is None:
+
+        return jsonify({
+            "erro": "Barbeiro não encontrado.",
+            "horarios": []
+        }), 404
+
+
+    horarios = buscar_horarios_disponiveis(
+        emerson["id"],
+        data_agendamento
+    )
+
+
+    return jsonify({
+        "data": data_agendamento,
+        "horarios": horarios,
+        "lotado": len(horarios) == 0,
+        "domingo": False
+    })
 
 
 # ==========================================================

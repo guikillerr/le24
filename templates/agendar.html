@@ -75,444 +75,421 @@
     </h1>
 
 
-    <!-- ==================================================
-    SERVIÇO
-    ================================================== -->
-
-    <section class="booking-step">
-
-
-        <span class="step-number">
-            01
-        </span>
-
-
-        <div>
-
-
-            <h2>
-                Escolha o serviço
-            </h2>
-
-
-            <p class="booking-description">
-
-                Primeiro selecione o serviço desejado.
-
-            </p>
-
-
-            <div class="service-options">
-
-
-                {% for servico in servicos %}
-
-
-                <a
-                    href="{{ url_for(
-                        'agendar',
-                        servico=servico['id'],
-                        data=data_selecionada
-                    ) }}"
-
-                    class="
-                        python-service-card
-
-                        {% if
-                            servico_selecionado
-                            ==
-                            servico['id']
-                        %}
-                            selected
-                        {% endif %}
-                    "
-                >
-
-
-                    <div>
-
-
-                        <strong>
-                            {{ servico["nome"] }}
-                        </strong>
-
-
-                        <span>
-
-                            Aproximadamente
-
-                            {{ servico["duracao"] }}
-
-                            minutos
-
-                        </span>
-
-
-                        <span class="service-price">
-
-                            R$ {{ "%.2f"|format(servico["preco"])|replace(".", ",") }}
-
-                        </span>
-
-
-                    </div>
-
-
-                    {% if
-                        servico_selecionado
-                        ==
-                        servico["id"]
-                    %}
-
-                    <span class="python-check">
-                        ✓
-                    </span>
-
-                    {% endif %}
-
-
-                </a>
-
-
-                {% endfor %}
-
-
-            </div>
-
-
-        </div>
-
-
-    </section>
-
-
-    <!-- ==================================================
-    BARBEIRO
-    ================================================== -->
-
-    <section class="booking-step">
-
-
-        <span class="step-number">
-            02
-        </span>
-
-
-        <div>
-
-
-            <h2>
-                Seu barbeiro
-            </h2>
-
-
-            <div class="booking-barber-card">
-
-
-                <img
-                    src="{{ url_for('static', filename='images/emerson.png') }}"
-                    alt="Emerson"
-                >
-
-
-                <div>
-
-
-                    <small>
-                        SEU BARBEIRO
-                    </small>
-
-
-                    <strong>
-
-                        {{ emerson["nome"] }}
-
-                    </strong>
-
-
-                    <p>
-
-                        Cortes · Degradê · Barba
-
-                    </p>
-
-
-                </div>
-
-
-                <span class="selected-check">
-                    ✓
-                </span>
-
-
-            </div>
-
-
-        </div>
-
-
-    </section>
-
-
-    <!-- ==================================================
-    CALENDÁRIO
-    ================================================== -->
-
-    <section class="booking-step">
-
-
-        <span class="step-number">
-            03
-        </span>
-
-
-        <div class="python-calendar-area">
-
-
-            <h2>
-                Escolha o dia
-            </h2>
-
-
-            <div class="python-calendar">
-
-
-                {% for dia in calendario %}
-
-
-                    {% if dia["domingo"] %}
-
-
-                    <div class="python-day closed">
-
-
-                        <span>
-                            {{ dia["semana"] }}
-                        </span>
-
-
-                        <strong>
-
-                            {{ "%02d"|format(dia["dia"]) }}
-
-                        </strong>
-
-
-                        <small>
-                            {{ dia["mes"] }}
-                        </small>
-
-
-                        <em>
-                            FECHADO
-                        </em>
-
-
-                    </div>
-
-
-                    {% elif dia["lotado"] %}
-
-
-                    <a
-                        href="{{ url_for(
-                            'agendar',
-                            servico=servico_selecionado,
-                            data=dia['data'],
-                            lotado=1
-                        ) }}"
-
-                        class="python-day soldout"
-                    >
-
-
-                        <span>
-                            {{ dia["semana"] }}
-                        </span>
-
-
-                        <strong>
-
-                            {{ "%02d"|format(dia["dia"]) }}
-
-                        </strong>
-
-
-                        <small>
-                            {{ dia["mes"] }}
-                        </small>
-
-
-                        <em>
-                            LOTADO
-                        </em>
-
-
-                    </a>
-
-
-                    {% else %}
-
-
-                    <a
-                        href="{{ url_for(
-                            'agendar',
-                            servico=servico_selecionado,
-                            data=dia['data']
-                        ) }}"
-
-                        class="
-                            python-day
-
-                            {% if
-                                data_selecionada
-                                ==
-                                dia['data']
-                            %}
-                                selected
-                            {% endif %}
-                        "
-                    >
-
-
-                        <span>
-                            {{ dia["semana"] }}
-                        </span>
-
-
-                        <strong>
-
-                            {{ "%02d"|format(dia["dia"]) }}
-
-                        </strong>
-
-
-                        <small>
-                            {{ dia["mes"] }}
-                        </small>
-
-
-                        <em>
-
-                            {{ dia["livres"] }}
-                            LIVRES
-
-                        </em>
-
-
-                    </a>
-
-
-                    {% endif %}
-
-
-                {% endfor %}
-
-
-            </div>
-
-
-            {% if mostrar_lotado %}
-
-
-            <div class="python-soldout-message">
-
-
-                <div class="python-soldout-icon">
-                    !
-                </div>
-
-
-                <div>
-
-
-                    <span class="section-small">
-
-                        AGENDA COMPLETA
-
-                    </span>
-
-
-                    <h3>
-
-                        TODOS OS HORÁRIOS
-                        ESTÃO OCUPADOS
-
-                    </h3>
-
-
-                    <p>
-
-                        Escolha outra data
-                        ou fale com a L24
-                        para verificar um possível encaixe.
-
-                    </p>
-
-
-                    <a
-                        href="https://wa.me/{{ whatsapp }}?text=Olá!%20Vi%20no%20site%20da%20L24%20que%20esse%20dia%20está%20lotado.%20Existe%20possibilidade%20de%20encaixe?"
-                        target="_blank"
-                        class="whatsapp-button"
-                    >
-
-                        FALAR NO WHATSAPP
-
-                    </a>
-
-
-                </div>
-
-
-            </div>
-
-
-            {% endif %}
-
-
-        </div>
-
-
-    </section>
-
-
-    <!-- ==================================================
-    HORÁRIO + CLIENTE
-    ================================================== -->
-
-    {% if
-        servico_selecionado
-        and
-        data_selecionada
-        and
-        horarios
-        and
-        not mostrar_lotado
-    %}
-
-
     <form
         method="POST"
         action="{{ url_for('agendar') }}"
         class="python-final-form"
+        id="booking-form"
     >
 
 
         <input
             type="hidden"
             name="servico"
-            value="{{ servico_selecionado }}"
+            id="servico-input"
+            value="{{ servico_selecionado or '' }}"
         >
 
 
         <input
             type="hidden"
             name="data"
-            value="{{ data_selecionada }}"
+            id="data-input"
+            value="{{ data_selecionada or '' }}"
         >
 
 
+        <!-- ==================================================
+        SERVIÇO
+        ================================================== -->
+
         <section class="booking-step">
+
+
+            <span class="step-number">
+                01
+            </span>
+
+
+            <div>
+
+
+                <h2>
+                    Escolha o serviço
+                </h2>
+
+
+                <p class="booking-description">
+
+                    Primeiro selecione o serviço desejado.
+
+                </p>
+
+
+                <div class="service-options">
+
+
+                    {% for servico in servicos %}
+
+
+                    <button
+                        type="button"
+                        class="
+                            python-service-card
+
+                            {% if
+                                servico_selecionado
+                                ==
+                                servico['id']
+                            %}
+                                selected
+                            {% endif %}
+                        "
+                        data-servico-id="{{ servico['id'] }}"
+                    >
+
+
+                        <div>
+
+
+                            <strong>
+                                {{ servico["nome"] }}
+                            </strong>
+
+
+                            <span>
+
+                                Aproximadamente
+
+                                {{ servico["duracao"] }}
+
+                                minutos
+
+                            </span>
+
+
+                            <span class="service-price">
+
+                                R$ {{ "%.2f"|format(servico["preco"])|replace(".", ",") }}
+
+                            </span>
+
+
+                        </div>
+
+
+                        <span class="python-check">
+                            ✓
+                        </span>
+
+
+                    </button>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+        BARBEIRO
+        ================================================== -->
+
+        <section class="booking-step">
+
+
+            <span class="step-number">
+                02
+            </span>
+
+
+            <div>
+
+
+                <h2>
+                    Seu barbeiro
+                </h2>
+
+
+                <div class="booking-barber-card">
+
+
+                    <img
+                        src="{{ url_for('static', filename='images/emerson.png') }}"
+                        alt="Emerson"
+                    >
+
+
+                    <div>
+
+
+                        <small>
+                            SEU BARBEIRO
+                        </small>
+
+
+                        <strong>
+
+                            {{ emerson["nome"] }}
+
+                        </strong>
+
+
+                        <p>
+
+                            Cortes · Degradê · Barba
+
+                        </p>
+
+
+                    </div>
+
+
+                    <span class="selected-check">
+                        ✓
+                    </span>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+        CALENDÁRIO
+        ================================================== -->
+
+        <section class="booking-step">
+
+
+            <span class="step-number">
+                03
+            </span>
+
+
+            <div class="python-calendar-area">
+
+
+                <h2>
+                    Escolha o dia
+                </h2>
+
+
+                <div class="python-calendar">
+
+
+                    {% for dia in calendario %}
+
+
+                        {% if dia["domingo"] %}
+
+
+                        <div class="python-day closed">
+
+
+                            <span>
+                                {{ dia["semana"] }}
+                            </span>
+
+
+                            <strong>
+
+                                {{ "%02d"|format(dia["dia"]) }}
+
+                            </strong>
+
+
+                            <small>
+                                {{ dia["mes"] }}
+                            </small>
+
+
+                            <em>
+                                FECHADO
+                            </em>
+
+
+                        </div>
+
+
+                        {% elif dia["lotado"] %}
+
+
+                        <button
+                            type="button"
+                            class="python-day soldout"
+                            data-data="{{ dia['data'] }}"
+                            data-lotado="1"
+                        >
+
+
+                            <span>
+                                {{ dia["semana"] }}
+                            </span>
+
+
+                            <strong>
+
+                                {{ "%02d"|format(dia["dia"]) }}
+
+                            </strong>
+
+
+                            <small>
+                                {{ dia["mes"] }}
+                            </small>
+
+
+                            <em>
+                                LOTADO
+                            </em>
+
+
+                        </button>
+
+
+                        {% else %}
+
+
+                        <button
+                            type="button"
+                            class="
+                                python-day
+
+                                {% if
+                                    data_selecionada
+                                    ==
+                                    dia['data']
+                                %}
+                                    selected
+                                {% endif %}
+                            "
+                            data-data="{{ dia['data'] }}"
+                            data-lotado="0"
+                        >
+
+
+                            <span>
+                                {{ dia["semana"] }}
+                            </span>
+
+
+                            <strong>
+
+                                {{ "%02d"|format(dia["dia"]) }}
+
+                            </strong>
+
+
+                            <small>
+                                {{ dia["mes"] }}
+                            </small>
+
+
+                            <em>
+
+                                {{ dia["livres"] }}
+                                LIVRES
+
+                            </em>
+
+
+                        </button>
+
+
+                        {% endif %}
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+                <!-- ==================================================
+                MENSAGEM DE DIA LOTADO
+                ================================================== -->
+
+                <div
+                    id="soldout-message"
+                    class="python-soldout-message booking-hidden"
+                >
+
+
+                    <div class="python-soldout-icon">
+                        !
+                    </div>
+
+
+                    <div>
+
+
+                        <span class="section-small">
+
+                            AGENDA COMPLETA
+
+                        </span>
+
+
+                        <h3>
+
+                            TODOS OS HORÁRIOS
+                            ESTÃO OCUPADOS
+
+                        </h3>
+
+
+                        <p>
+
+                            Escolha outra data
+                            ou fale com a L24
+                            para verificar um possível encaixe.
+
+                        </p>
+
+
+                        <a
+                            href="https://wa.me/{{ whatsapp }}?text=Olá!%20Vi%20no%20site%20da%20L24%20que%20esse%20dia%20está%20lotado.%20Existe%20possibilidade%20de%20encaixe?"
+                            target="_blank"
+                            class="whatsapp-button"
+                        >
+
+                            FALAR NO WHATSAPP
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+        HORÁRIO
+        ================================================== -->
+
+        <section
+            class="booking-step booking-hidden"
+            id="horarios-step"
+        >
 
 
             <span class="step-number">
@@ -528,34 +505,10 @@
                 </h2>
 
 
-                <div class="python-times-grid">
-
-
-                    {% for horario in horarios %}
-
-
-                    <label class="python-time">
-
-
-                        <input
-                            type="radio"
-                            name="horario"
-                            value="{{ horario }}"
-                            required
-                        >
-
-
-                        <span>
-                            {{ horario }}
-                        </span>
-
-
-                    </label>
-
-
-                    {% endfor %}
-
-
+                <div
+                    class="python-times-grid"
+                    id="horarios-grid"
+                >
                 </div>
 
 
@@ -565,7 +518,14 @@
         </section>
 
 
-        <section class="booking-step">
+        <!-- ==================================================
+        DADOS DO CLIENTE
+        ================================================== -->
+
+        <section
+            class="booking-step booking-hidden"
+            id="dados-step"
+        >
 
 
             <span class="step-number">
@@ -635,7 +595,14 @@
         </section>
 
 
-        <div class="booking-submit">
+        <!-- ==================================================
+        BOTÃO FINAL
+        ================================================== -->
+
+        <div
+            class="booking-submit booking-hidden"
+            id="booking-submit"
+        >
 
 
             <button type="submit">
@@ -648,36 +615,640 @@
         </div>
 
 
-    </form>
+        <!-- ==================================================
+        INSTRUÇÃO
+        ================================================== -->
 
-
-    {% else %}
-
-
-        {% if not servico_selecionado %}
-
-        <div class="python-instruction">
+        <div
+            class="python-instruction"
+            id="booking-instruction"
+        >
 
             ↑ Escolha primeiro um serviço.
 
         </div>
 
 
-        {% elif not data_selecionada %}
-
-        <div class="python-instruction">
-
-            ↑ Agora escolha um dia.
-
-        </div>
-
-        {% endif %}
-
-
-    {% endif %}
+    </form>
 
 
 </main>
+
+
+<!-- ==========================================================
+JAVASCRIPT DO AGENDAMENTO
+
+Aqui acontece a seleção sem refresh.
+O Flask continua responsável por validar e salvar o agendamento.
+========================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* ======================================================
+    ELEMENTOS PRINCIPAIS
+    ====================================================== */
+
+    const servicoInput =
+        document.getElementById("servico-input");
+
+    const dataInput =
+        document.getElementById("data-input");
+
+    const servicoCards =
+        document.querySelectorAll(".python-service-card");
+
+    const dayButtons =
+        document.querySelectorAll(
+            ".python-day[data-data]"
+        );
+
+    const horariosStep =
+        document.getElementById("horarios-step");
+
+    const horariosGrid =
+        document.getElementById("horarios-grid");
+
+    const dadosStep =
+        document.getElementById("dados-step");
+
+    const bookingSubmit =
+        document.getElementById("booking-submit");
+
+    const instruction =
+        document.getElementById("booking-instruction");
+
+    const soldoutMessage =
+        document.getElementById("soldout-message");
+
+
+    /* ======================================================
+    ESCONDER HORÁRIOS E DADOS
+    ====================================================== */
+
+    function esconderEtapasFinais() {
+
+
+        horariosStep.classList.add(
+            "booking-hidden"
+        );
+
+
+        dadosStep.classList.add(
+            "booking-hidden"
+        );
+
+
+        bookingSubmit.classList.add(
+            "booking-hidden"
+        );
+
+
+        horariosGrid.innerHTML = "";
+
+
+    }
+
+
+    /* ======================================================
+    TEXTO DE INSTRUÇÃO
+    ====================================================== */
+
+    function atualizarInstrucao() {
+
+
+        if (!servicoInput.value) {
+
+
+            instruction.textContent =
+                "↑ Escolha primeiro um serviço.";
+
+
+            instruction.classList.remove(
+                "booking-hidden"
+            );
+
+
+            return;
+
+
+        }
+
+
+        if (!dataInput.value) {
+
+
+            instruction.textContent =
+                "↑ Agora escolha um dia.";
+
+
+            instruction.classList.remove(
+                "booking-hidden"
+            );
+
+
+            return;
+
+
+        }
+
+
+        instruction.classList.add(
+            "booking-hidden"
+        );
+
+
+    }
+
+
+    /* ======================================================
+    SELECIONAR SERVIÇO
+    ====================================================== */
+
+    function selecionarServico(card) {
+
+
+        servicoCards.forEach(function (item) {
+
+
+            item.classList.remove(
+                "selected"
+            );
+
+
+        });
+
+
+        card.classList.add(
+            "selected"
+        );
+
+
+        servicoInput.value =
+            card.dataset.servicoId;
+
+
+        soldoutMessage.classList.add(
+            "booking-hidden"
+        );
+
+
+        atualizarInstrucao();
+
+
+    }
+
+
+    /* ======================================================
+    MARCAR DIA VISUALMENTE
+    ====================================================== */
+
+    function selecionarDiaVisual(button) {
+
+
+        dayButtons.forEach(function (item) {
+
+
+            item.classList.remove(
+                "selected"
+            );
+
+
+        });
+
+
+        button.classList.add(
+            "selected"
+        );
+
+
+    }
+
+
+    /* ======================================================
+    CRIAR BOTÃO DE HORÁRIO
+    ====================================================== */
+
+    function criarHorario(horario) {
+
+
+        const label =
+            document.createElement("label");
+
+
+        label.className =
+            "python-time";
+
+
+        const input =
+            document.createElement("input");
+
+
+        input.type =
+            "radio";
+
+
+        input.name =
+            "horario";
+
+
+        input.value =
+            horario;
+
+
+        input.required =
+            true;
+
+
+        const span =
+            document.createElement("span");
+
+
+        span.textContent =
+            horario;
+
+
+        label.appendChild(
+            input
+        );
+
+
+        label.appendChild(
+            span
+        );
+
+
+        return label;
+
+
+    }
+
+
+    /* ======================================================
+    BUSCAR HORÁRIOS NO FLASK SEM REFRESH
+    ====================================================== */
+
+    async function carregarHorarios(data) {
+
+
+        horariosStep.classList.remove(
+            "booking-hidden"
+        );
+
+
+        dadosStep.classList.add(
+            "booking-hidden"
+        );
+
+
+        bookingSubmit.classList.add(
+            "booking-hidden"
+        );
+
+
+        horariosGrid.innerHTML =
+            '<div class="python-times-loading">Carregando horários...</div>';
+
+
+        try {
+
+
+            const resposta =
+                await fetch(
+                    "/api/horarios?data=" +
+                    encodeURIComponent(data),
+                    {
+
+                        headers: {
+
+                            "Accept":
+                                "application/json"
+
+                        }
+
+                    }
+                );
+
+
+            const resultado =
+                await resposta.json();
+
+
+            /* ==================================================
+            ERRO DA API
+            ================================================== */
+
+            if (!resposta.ok) {
+
+
+                throw new Error(
+
+                    resultado.erro ||
+
+                    "Não foi possível carregar os horários."
+
+                );
+
+
+            }
+
+
+            /* ==================================================
+            DIA LOTADO
+            ================================================== */
+
+            if (
+                resultado.lotado
+                ||
+                !resultado.horarios
+                ||
+                resultado.horarios.length === 0
+            ) {
+
+
+                horariosGrid.innerHTML =
+                    "";
+
+
+                horariosStep.classList.add(
+                    "booking-hidden"
+                );
+
+
+                dadosStep.classList.add(
+                    "booking-hidden"
+                );
+
+
+                bookingSubmit.classList.add(
+                    "booking-hidden"
+                );
+
+
+                soldoutMessage.classList.remove(
+                    "booking-hidden"
+                );
+
+
+                dataInput.value =
+                    "";
+
+
+                atualizarInstrucao();
+
+
+                return;
+
+
+            }
+
+
+            /* ==================================================
+            MONTA OS HORÁRIOS
+            ================================================== */
+
+            horariosGrid.innerHTML =
+                "";
+
+
+            resultado.horarios.forEach(
+
+                function (horario) {
+
+
+                    horariosGrid.appendChild(
+
+                        criarHorario(
+                            horario
+                        )
+
+                    );
+
+
+                }
+
+            );
+
+
+            /* ==================================================
+            MOSTRA AS PRÓXIMAS ETAPAS
+            ================================================== */
+
+            horariosStep.classList.remove(
+                "booking-hidden"
+            );
+
+
+            dadosStep.classList.remove(
+                "booking-hidden"
+            );
+
+
+            bookingSubmit.classList.remove(
+                "booking-hidden"
+            );
+
+
+            soldoutMessage.classList.add(
+                "booking-hidden"
+            );
+
+
+            instruction.classList.add(
+                "booking-hidden"
+            );
+
+
+        }
+
+
+        catch (erro) {
+
+
+            horariosGrid.innerHTML =
+
+                '<div class="python-times-loading">' +
+
+                erro.message +
+
+                "</div>";
+
+
+        }
+
+
+    }
+
+
+    /* ======================================================
+    CLIQUE NOS SERVIÇOS
+    ====================================================== */
+
+    servicoCards.forEach(function (card) {
+
+
+        card.addEventListener(
+
+            "click",
+
+            function () {
+
+
+                selecionarServico(
+                    card
+                );
+
+
+            }
+
+        );
+
+
+    });
+
+
+    /* ======================================================
+    CLIQUE NOS DIAS
+    ====================================================== */
+
+    dayButtons.forEach(function (button) {
+
+
+        button.addEventListener(
+
+            "click",
+
+            function () {
+
+
+                /* ==============================================
+                PRECISA ESCOLHER SERVIÇO PRIMEIRO
+                ============================================== */
+
+                if (!servicoInput.value) {
+
+
+                    instruction.textContent =
+                        "↑ Escolha primeiro um serviço.";
+
+
+                    instruction.classList.remove(
+                        "booking-hidden"
+                    );
+
+
+                    return;
+
+
+                }
+
+
+                soldoutMessage.classList.add(
+                    "booking-hidden"
+                );
+
+
+                /* ==============================================
+                DIA LOTADO
+                ============================================== */
+
+                if (
+                    button.dataset.lotado
+                    ===
+                    "1"
+                ) {
+
+
+                    dataInput.value =
+                        "";
+
+
+                    selecionarDiaVisual(
+                        button
+                    );
+
+
+                    esconderEtapasFinais();
+
+
+                    soldoutMessage.classList.remove(
+                        "booking-hidden"
+                    );
+
+
+                    instruction.classList.add(
+                        "booking-hidden"
+                    );
+
+
+                    return;
+
+
+                }
+
+
+                /* ==============================================
+                DIA DISPONÍVEL
+                ============================================== */
+
+                selecionarDiaVisual(
+                    button
+                );
+
+
+                dataInput.value =
+                    button.dataset.data;
+
+
+                atualizarInstrucao();
+
+
+                carregarHorarios(
+                    button.dataset.data
+                );
+
+
+            }
+
+        );
+
+
+    });
+
+
+    /* ======================================================
+    CASO A PÁGINA JÁ TENHA SERVIÇO + DATA
+    ====================================================== */
+
+    if (
+        servicoInput.value
+        &&
+        dataInput.value
+    ) {
+
+
+        carregarHorarios(
+            dataInput.value
+        );
+
+
+    }
+
+
+    else {
+
+
+        atualizarInstrucao();
+
+
+    }
+
+
+});
+
+</script>
 
 
 </body>
