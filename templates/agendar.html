@@ -28,17 +28,18 @@
 </head>
 
 
-<body class="booking-body">
+<body>
 
 
 <header class="booking-header">
+
 
     <a href="/">
 
         <img
             src="{{ url_for('static', filename='images/logo-l24.png') }}"
             class="booking-logo"
-            alt="L24 Barbearia"
+            alt="L24"
         >
 
     </a>
@@ -48,8 +49,11 @@
         href="/"
         class="booking-back"
     >
+
         ← VOLTAR
+
     </a>
+
 
 </header>
 
@@ -58,18 +62,25 @@
 
 
     <span class="section-small">
+
         AGENDAMENTO
+
     </span>
 
 
     <h1 class="booking-title">
+
         RESERVE SEU HORÁRIO
+
     </h1>
 
 
-    <!-- SERVIÇO -->
+    <!-- ==================================================
+    SERVIÇO
+    ================================================== -->
 
     <section class="booking-step">
+
 
         <span class="step-number">
             01
@@ -78,6 +89,7 @@
 
         <div>
 
+
             <h2>
                 Escolha o serviço
             </h2>
@@ -85,13 +97,13 @@
 
             <p class="booking-description">
 
-                Primeiro selecione
-                o serviço desejado.
+                Primeiro selecione o serviço desejado.
 
             </p>
 
 
             <div class="service-options">
+
 
                 {% for servico in servicos %}
 
@@ -111,14 +123,14 @@
                             ==
                             servico['id']
                         %}
-
                             selected
-
                         {% endif %}
                     "
                 >
 
+
                     <div>
+
 
                         <strong>
                             {{ servico["nome"] }}
@@ -135,6 +147,19 @@
 
                         </span>
 
+
+                        <span class="service-price">
+
+                            R$
+                            {{
+                                "%.2f"|format(
+                                    servico["preco"]
+                                )
+                            }}
+
+                        </span>
+
+
                     </div>
 
 
@@ -150,21 +175,28 @@
 
                     {% endif %}
 
+
                 </a>
 
 
                 {% endfor %}
 
+
             </div>
 
+
         </div>
+
 
     </section>
 
 
-    <!-- BARBEIRO -->
+    <!-- ==================================================
+    BARBEIRO
+    ================================================== -->
 
     <section class="booking-step">
+
 
         <span class="step-number">
             02
@@ -173,12 +205,14 @@
 
         <div>
 
+
             <h2>
                 Seu barbeiro
             </h2>
 
 
             <div class="booking-barber-card">
+
 
                 <img
                     src="{{ url_for('static', filename='images/emerson.png') }}"
@@ -188,19 +222,25 @@
 
                 <div>
 
+
                     <small>
                         SEU BARBEIRO
                     </small>
 
 
                     <strong>
+
                         {{ emerson["nome"] }}
+
                     </strong>
 
 
                     <p>
-                        Cortes • Degradê • Barba
+
+                        Cortes · Degradê · Barba
+
                     </p>
+
 
                 </div>
 
@@ -209,16 +249,22 @@
                     ✓
                 </span>
 
+
             </div>
 
+
         </div>
+
 
     </section>
 
 
-    <!-- CALENDÁRIO -->
+    <!-- ==================================================
+    CALENDÁRIO
+    ================================================== -->
 
     <section class="booking-step">
+
 
         <span class="step-number">
             03
@@ -227,17 +273,10 @@
 
         <div class="python-calendar-area">
 
+
             <h2>
                 Escolha o dia
             </h2>
-
-
-            <p class="booking-description">
-
-                Deslize horizontalmente para
-                visualizar os próximos dias.
-
-            </p>
 
 
             <div class="python-calendar">
@@ -249,103 +288,124 @@
                     {% if dia["domingo"] %}
 
 
-                        <div class="python-day closed">
+                    <div class="python-day closed">
 
-                            <span>
-                                {{ dia["semana"] }}
-                            </span>
 
-                            <strong>
-                                {{ "%02d"|format(dia["dia"]) }}
-                            </strong>
+                        <span>
+                            {{ dia["semana"] }}
+                        </span>
 
-                            <small>
-                                {{ dia["mes"] }}
-                            </small>
 
-                            <em>
-                                FECHADO
-                            </em>
+                        <strong>
 
-                        </div>
+                            {{ "%02d"|format(dia["dia"]) }}
+
+                        </strong>
+
+
+                        <small>
+                            {{ dia["mes"] }}
+                        </small>
+
+
+                        <em>
+                            FECHADO
+                        </em>
+
+
+                    </div>
 
 
                     {% elif dia["lotado"] %}
 
 
-                        <a
-                            href="{{ url_for(
-                                'agendar',
-                                servico=servico_selecionado,
-                                data=dia['data'],
-                                lotado=1
-                            ) }}"
+                    <a
+                        href="{{ url_for(
+                            'agendar',
+                            servico=servico_selecionado,
+                            data=dia['data'],
+                            lotado=1
+                        ) }}"
 
-                            class="python-day soldout"
-                        >
+                        class="python-day soldout"
+                    >
 
-                            <span>
-                                {{ dia["semana"] }}
-                            </span>
 
-                            <strong>
-                                {{ "%02d"|format(dia["dia"]) }}
-                            </strong>
+                        <span>
+                            {{ dia["semana"] }}
+                        </span>
 
-                            <small>
-                                {{ dia["mes"] }}
-                            </small>
 
-                            <em>
-                                LOTADO
-                            </em>
+                        <strong>
 
-                        </a>
+                            {{ "%02d"|format(dia["dia"]) }}
+
+                        </strong>
+
+
+                        <small>
+                            {{ dia["mes"] }}
+                        </small>
+
+
+                        <em>
+                            LOTADO
+                        </em>
+
+
+                    </a>
 
 
                     {% else %}
 
 
-                        <a
-                            href="{{ url_for(
-                                'agendar',
-                                servico=servico_selecionado,
-                                data=dia['data']
-                            ) }}"
+                    <a
+                        href="{{ url_for(
+                            'agendar',
+                            servico=servico_selecionado,
+                            data=dia['data']
+                        ) }}"
 
-                            class="
-                                python-day
+                        class="
+                            python-day
 
-                                {% if
-                                    data_selecionada
-                                    ==
-                                    dia['data']
-                                %}
-                                    selected
-                                {% endif %}
-                            "
-                        >
+                            {% if
+                                data_selecionada
+                                ==
+                                dia['data']
+                            %}
+                                selected
+                            {% endif %}
+                        "
+                    >
 
-                            <span>
-                                {{ dia["semana"] }}
-                            </span>
 
-                            <strong>
-                                {{ "%02d"|format(dia["dia"]) }}
-                            </strong>
+                        <span>
+                            {{ dia["semana"] }}
+                        </span>
 
-                            <small>
-                                {{ dia["mes"] }}
-                            </small>
 
-                            <em>
+                        <strong>
 
-                                {{ dia["livres"] }}
-                                LIVRES
+                            {{ "%02d"|format(dia["dia"]) }}
 
-                            </em>
+                        </strong>
 
-                        </a>
+
+                        <small>
+                            {{ dia["mes"] }}
+                        </small>
+
+
+                        <em>
+
+                            {{ dia["livres"] }}
+                            LIVRES
+
+                        </em>
+
+
+                    </a>
 
 
                     {% endif %}
@@ -353,15 +413,15 @@
 
                 {% endfor %}
 
+
             </div>
 
-
-            <!-- DIA LOTADO -->
 
             {% if mostrar_lotado %}
 
 
             <div class="python-soldout-message">
+
 
                 <div class="python-soldout-icon">
                     !
@@ -370,8 +430,11 @@
 
                 <div>
 
+
                     <span class="section-small">
+
                         AGENDA COMPLETA
+
                     </span>
 
 
@@ -385,23 +448,15 @@
 
                     <p>
 
-                        Não existem mais horários
-                        disponíveis para esse dia.
-
-                    </p>
-
-
-                    <p>
-
-                        Escolha outra data ou fale
-                        diretamente com a L24 para
-                        verificar um possível encaixe.
+                        Escolha outra data
+                        ou fale com a L24
+                        para verificar um possível encaixe.
 
                     </p>
 
 
                     <a
-                        href="https://wa.me/{{ whatsapp }}?text=Olá!%20Vi%20no%20site%20da%20L24%20que%20todos%20os%20horários%20desse%20dia%20estão%20ocupados.%20Existe%20possibilidade%20de%20encaixe?"
+                        href="https://wa.me/{{ whatsapp }}?text=Olá!%20Vi%20no%20site%20da%20L24%20que%20esse%20dia%20está%20lotado.%20Existe%20possibilidade%20de%20encaixe?"
                         target="_blank"
                         class="whatsapp-button"
                     >
@@ -410,59 +465,25 @@
 
                     </a>
 
+
                 </div>
+
 
             </div>
 
 
             {% endif %}
 
-
-            {% if
-                data_selecionada
-                and
-                not mostrar_lotado
-            %}
-
-
-            <div class="python-times-panel">
-
-                <div class="python-times-header">
-
-                    <div>
-
-                        <span class="section-small">
-                            HORÁRIOS DISPONÍVEIS
-                        </span>
-
-
-                        <h3>
-                            {{ data_selecionada }}
-                        </h3>
-
-                    </div>
-
-
-                    <strong>
-
-                        {{ horarios|length }}
-                        LIVRES
-
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            {% endif %}
 
         </div>
+
 
     </section>
 
 
-    <!-- FORMULÁRIO -->
+    <!-- ==================================================
+    HORÁRIO + CLIENTE
+    ================================================== -->
 
     {% if
         servico_selecionado
@@ -496,9 +517,8 @@
         >
 
 
-        <!-- HORÁRIO -->
-
         <section class="booking-step">
+
 
             <span class="step-number">
                 04
@@ -506,6 +526,7 @@
 
 
             <div>
+
 
                 <h2>
                     Escolha o horário
@@ -520,6 +541,7 @@
 
                     <label class="python-time">
 
+
                         <input
                             type="radio"
                             name="horario"
@@ -532,21 +554,24 @@
                             {{ horario }}
                         </span>
 
+
                     </label>
 
 
                     {% endfor %}
 
+
                 </div>
 
+
             </div>
+
 
         </section>
 
 
-        <!-- DADOS -->
-
         <section class="booking-step">
+
 
             <span class="step-number">
                 05
@@ -555,22 +580,17 @@
 
             <div>
 
+
                 <h2>
                     Seus dados
                 </h2>
 
 
-                <p class="booking-description">
-
-                    Preencha seus dados
-                    para confirmar a reserva.
-
-                </p>
-
-
                 <div class="customer-grid">
 
+
                     <div>
+
 
                         <label>
                             NOME
@@ -581,13 +601,16 @@
                             type="text"
                             name="cliente"
                             placeholder="Seu nome"
+                            autocomplete="name"
                             required
                         >
+
 
                     </div>
 
 
                     <div>
+
 
                         <label>
                             WHATSAPP
@@ -604,16 +627,21 @@
                             required
                         >
 
+
                     </div>
+
 
                 </div>
 
+
             </div>
+
 
         </section>
 
 
         <div class="booking-submit">
+
 
             <button type="submit">
 
@@ -621,7 +649,9 @@
 
             </button>
 
+
         </div>
+
 
     </form>
 
@@ -633,22 +663,18 @@
 
         <div class="python-instruction">
 
-            ↑ Selecione primeiro
-            um serviço.
+            ↑ Escolha primeiro um serviço.
 
         </div>
 
 
         {% elif not data_selecionada %}
 
-
         <div class="python-instruction">
 
-            ↑ Agora escolha
-            um dia disponível.
+            ↑ Agora escolha um dia.
 
         </div>
-
 
         {% endif %}
 
