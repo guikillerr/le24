@@ -75,6 +75,15 @@
     </h2>
 
 
+    {% if request.args.get("removido") == "1" %}
+
+        <div class="mensagem-removido">
+            Agendamento removido com sucesso.
+        </div>
+
+    {% endif %}
+
+
     <div class="table-container">
 
         <table>
@@ -96,6 +105,8 @@
                     <th>HORÁRIO</th>
 
                     <th>STATUS</th>
+
+                    <th>AÇÃO</th>
 
                 </tr>
 
@@ -143,6 +154,26 @@
 
                     </td>
 
+                    <td>
+
+                        <form
+                            action="{{ url_for('excluir_agendamento', agendamento_id=agendamento['id']) }}"
+                            method="POST"
+                            class="form-limpar-agendamento"
+                            onsubmit="return confirm('Tem certeza que deseja apagar este agendamento?');"
+                        >
+
+                            <button
+                                type="submit"
+                                class="btn-limpar-agendamento"
+                            >
+                                LIMPAR
+                            </button>
+
+                        </form>
+
+                    </td>
+
                 </tr>
 
 
@@ -151,7 +182,7 @@
 
                 <tr>
 
-                    <td colspan="7">
+                    <td colspan="8">
 
                         Nenhum agendamento encontrado.
 

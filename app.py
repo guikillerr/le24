@@ -1558,6 +1558,58 @@ def admin():
 
 
 # ==========================================================
+# EXCLUIR AGENDAMENTO PELO ADMIN
+# ==========================================================
+
+@app.route(
+    "/admin/excluir-agendamento/<int:agendamento_id>",
+    methods=[
+        "POST"
+    ]
+)
+def excluir_agendamento(
+    agendamento_id
+):
+
+    # Somente um administrador autenticado pode excluir.
+
+    if not session.get(
+        "admin_logado"
+    ):
+
+        return redirect(
+            url_for(
+                "login"
+            )
+        )
+
+
+    banco = conectar_banco()
+
+
+    banco.execute("""
+        DELETE FROM agendamentos
+
+        WHERE id = ?
+    """, (
+        agendamento_id,
+    ))
+
+
+    banco.commit()
+
+    banco.close()
+
+
+    return redirect(
+        url_for(
+            "admin",
+            removido="1"
+        )
+    )
+
+
+# ==========================================================
 # RODAR
 # ==========================================================
 

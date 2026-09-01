@@ -1837,6 +1837,83 @@ td {
 
 
 /* ======================================================
+AÇÃO DO AGENDAMENTO NO PAINEL
+====================================================== */
+
+.form-limpar-agendamento {
+    display: flex;
+    justify-content: center;
+
+    margin: 0;
+}
+
+
+.btn-limpar-agendamento {
+    padding:
+        8px
+        15px;
+
+    border:
+        1px
+        solid
+        var(--red);
+
+    border-radius: 20px;
+
+    color: var(--red);
+    background: transparent;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+
+.btn-limpar-agendamento:hover {
+    color: white;
+    background: var(--red);
+
+    box-shadow:
+        0
+        0
+        14px
+        rgba(239, 48, 55, .35);
+
+    transform: translateY(-1px);
+}
+
+
+.btn-limpar-agendamento:active {
+    transform: translateY(0);
+}
+
+
+.mensagem-removido {
+    margin-bottom: 20px;
+
+    padding:
+        14px
+        18px;
+
+    border:
+        1px
+        solid
+        var(--green);
+
+    border-radius: 5px;
+
+    color: #72e4a2;
+    background: rgba(53, 199, 121, .08);
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+/* ======================================================
 TABLET
 ====================================================== */
 
