@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Horário indisponível | L24
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body class="soldout-page">
+
+
+<main class="soldout-container">
+
+
+    <img
+        src="{{ url_for('static', filename='images/logo-l24.png') }}"
+        class="soldout-logo"
+        alt="L24 Barbearia"
+    >
+
+
+    <div class="soldout-icon">
+
+        !
+
+    </div>
+
+
+    <span>
+
+        AGENDA L24
+
+    </span>
+
+
+    <h1>
+
+        HORÁRIO
+        INDISPONÍVEL
+
+    </h1>
+
+
+    <p>
+
+        Esse horário acabou de ser
+        reservado por outra pessoa ou
+        não está mais disponível.
+
+    </p>
+
+
+    <p>
+
+        Escolha outro horário ou fale
+        diretamente com a barbearia
+        para verificar um possível encaixe.
+
+    </p>
+
+
+    <a
+        href="https://wa.me/{{ whatsapp }}?text=Olá!%20Gostaria%20de%20verificar%20se%20existe%20algum%20encaixe%20disponível%20na%20L24%20Barbearia."
+        target="_blank"
+        class="whatsapp-button"
+    >
+
+        FALAR NO WHATSAPP
+
+    </a>
+
+
+    <a
+        href="/agendar"
+        class="soldout-back"
+    >
+
+        ← ESCOLHER OUTRO HORÁRIO
+
+    </a>
+
+
+</main>
+
+
+</body>
+
+</html>

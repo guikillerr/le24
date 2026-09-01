@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Meus agendamentos | L24
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="booking-header">
+
+    <a href="/">
+
+        <img
+            src="{{ url_for('static', filename='images/logo-l24.png') }}"
+            class="booking-logo"
+            alt="L24"
+        >
+
+    </a>
+
+
+    <a
+        href="/"
+        class="booking-back"
+    >
+        ← HOME
+    </a>
+
+</header>
+
+
+<main class="appointments-container">
+
+    <span class="section-small">
+        SUA AGENDA
+    </span>
+
+
+    <h1 class="appointments-title">
+        MEUS AGENDAMENTOS
+    </h1>
+
+
+    {% for agendamento in agendamentos %}
+
+
+    <div class="appointment-card">
+
+        <div>
+
+            <strong>
+                {{ agendamento["data"] }}
+            </strong>
+
+
+            <h2>
+                {{ agendamento["horario"] }}
+            </h2>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                {{ agendamento["servico"] }}
+            </h3>
+
+
+            <p>
+                {{ agendamento["barbeiro"] }}
+            </p>
+
+        </div>
+
+
+        <span class="status-confirmado">
+            {{ agendamento["status"] }}
+        </span>
+
+    </div>
+
+
+    {% else %}
+
+
+    <div class="empty-appointments">
+
+        Você ainda não possui
+        agendamentos.
+
+    </div>
+
+
+    {% endfor %}
+
+
+    <a
+        href="/agendar"
+        class="confirmation-main-button"
+    >
+
+        NOVO AGENDAMENTO
+
+    </a>
+
+</main>
+
+
+</body>
+
+</html>

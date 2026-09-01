@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        L24 Barbearia
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+    <div class="container navbar-content">
+
+        <a href="/">
+
+            <img
+                src="{{ url_for('static', filename='images/logo-l24.png') }}"
+                class="logo-img"
+                alt="L24 Barbearia"
+            >
+
+        </a>
+
+
+        <nav class="menu">
+
+            <a href="#inicio">
+                INÍCIO
+            </a>
+
+            <a href="#sobre">
+                SOBRE
+            </a>
+
+            <a href="#servicos">
+                SERVIÇOS
+            </a>
+
+            <a href="#barbeiro">
+                BARBEIRO
+            </a>
+
+            <a href="#contato">
+                CONTATO
+            </a>
+
+        </nav>
+
+
+        <a
+            href="/agendar"
+            class="btn-outline"
+        >
+
+            AGENDAR
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<section
+    id="inicio"
+    class="hero"
+>
+
+    <div class="hero-overlay">
+    </div>
+
+
+    <div class="container hero-content">
+
+        <div class="hero-text">
+
+            <h1>
+
+                SEU ESTILO,
+
+                <br>
+
+                <span>
+                    NOSSA MISSÃO.
+                </span>
+
+            </h1>
+
+
+            <p>
+
+                Mais que um corte,
+                uma experiência completa.
+
+                Confiança, estilo e atitude
+                em cada detalhe.
+
+            </p>
+
+
+            <a
+                href="/agendar"
+                class="btn-primary"
+            >
+
+                AGENDAR HORÁRIO
+
+            </a>
+
+        </div>
+
+
+        <img
+            src="{{ url_for('static', filename='images/logo-l24.png') }}"
+            class="hero-logo-img"
+            alt="L24"
+        >
+
+    </div>
+
+</section>
+
+
+<!-- CORTES / BARBA ESTÁTICOS -->
+
+<section class="specialties">
+
+    <div class="container specialties-grid">
+
+        <div class="specialty">
+
+            <div class="specialty-icon blue">
+                ✂
+            </div>
+
+            <div>
+
+                <h3>
+                    CORTES MODERNOS
+                </h3>
+
+                <p>
+                    Estilo e precisão
+                    em cada detalhe.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="specialty">
+
+            <div class="specialty-icon red">
+                🪒
+            </div>
+
+            <div>
+
+                <h3>
+                    BARBA
+                </h3>
+
+                <p>
+                    Acabamento perfeito
+                    para sua barba.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- GALERIA DE CORTES -->
+
+<section class="cuts-showcase">
+
+    <div class="container">
+
+        <span class="section-small">
+            NOSSOS TRABALHOS
+        </span>
+
+        <h2 class="section-title">
+            CORTES EM DESTAQUE.
+        </h2>
+
+
+        <div class="carousel">
+
+            <div class="carousel-slide active">
+
+                <img
+                    src="{{ url_for('static', filename='images/cortes/corte1.jpg') }}"
+                    alt="Corte L24"
+                >
+
+            </div>
+
+
+            <div class="carousel-slide">
+
+                <img
+                    src="{{ url_for('static', filename='images/cortes/corte2.jpg') }}"
+                    alt="Corte L24"
+                >
+
+            </div>
+
+
+            <div class="carousel-slide">
+
+                <img
+                    src="{{ url_for('static', filename='images/cortes/corte3.jpg') }}"
+                    alt="Corte L24"
+                >
+
+            </div>
+
+
+            <div class="carousel-slide">
+
+                <img
+                    src="{{ url_for('static', filename='images/cortes/corte4.jpg') }}"
+                    alt="Corte L24"
+                >
+
+            </div>
+
+
+            <button
+                type="button"
+                id="prevSlide"
+                class="carousel-arrow carousel-prev"
+            >
+                ←
+            </button>
+
+
+            <button
+                type="button"
+                id="nextSlide"
+                class="carousel-arrow carousel-next"
+            >
+                →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SOBRE -->
+
+<section
+    id="sobre"
+    class="about"
+>
+
+    <div class="container about-grid">
+
+        <div>
+
+            <span class="section-small">
+                SOBRE NÓS
+            </span>
+
+
+            <h2>
+
+                TRADIÇÃO E ESTILO
+
+                <br>
+
+                DESDE O
+
+                <span>
+                    PRIMEIRO CORTE.
+                </span>
+
+            </h2>
+
+
+            <p>
+
+                A L24 Barbearia nasceu
+                para oferecer muito mais
+                que simplesmente um corte.
+
+                Técnica, estilo,
+                atendimento e confiança
+                fazem parte de cada experiência.
+
+            </p>
+
+
+            <a
+                href="/agendar"
+                class="btn-outline"
+            >
+
+                AGENDE AGORA →
+
+            </a>
+
+        </div>
+
+
+        <div class="about-image">
+
+            <img
+                src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70"
+                alt="Barbearia"
+            >
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SERVIÇOS SEM PREÇOS -->
+
+<section
+    id="servicos"
+    class="services"
+>
+
+    <div class="container">
+
+        <span class="section-small">
+            NOSSOS SERVIÇOS
+        </span>
+
+
+        <h2 class="section-title">
+            ESCOLHA SEU ESTILO.
+        </h2>
+
+
+        <div class="services-grid">
+
+            {% for servico in servicos %}
+
+
+            <div class="service-card">
+
+                <div class="service-icon">
+                    ✂
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        {{ servico["nome"] }}
+                    </h3>
+
+
+                    <p>
+
+                        Aproximadamente
+
+                        {{ servico["duracao"] }}
+
+                        minutos.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- EMERSON -->
+
+<section
+    id="barbeiro"
+    class="barber-section"
+>
+
+    <div class="container">
+
+        <span class="section-small">
+            NOSSO BARBEIRO
+        </span>
+
+
+        <h2 class="section-title">
+
+            PROFISSIONAL QUE ENTENDE
+            DE ESTILO.
+
+        </h2>
+
+
+        <div class="emerson-card">
+
+            <div class="emerson-photo-wrapper">
+
+                <img
+                    src="{{ url_for('static', filename='images/emerson.png') }}"
+                    class="emerson-photo"
+                    alt="Emerson"
+                >
+
+            </div>
+
+
+            <div class="emerson-content">
+
+                <span class="section-small">
+                    L24 BARBEARIA
+                </span>
+
+
+                <h3>
+                    EMERSON
+                </h3>
+
+
+                <strong>
+                    BARBEIRO PROFISSIONAL
+                </strong>
+
+
+                <div class="emerson-line">
+                </div>
+
+
+                <p>
+
+                    Técnica, precisão
+                    e estilo em cada detalhe.
+
+                    Especialista em cortes modernos,
+                    degradês, acabamento e barba.
+
+                </p>
+
+
+                <div class="emerson-skills">
+
+                    <span>
+                        ✂ CORTES
+                    </span>
+
+                    <span>
+                        💈 DEGRADÊ
+                    </span>
+
+                    <span>
+                        🪒 BARBA
+                    </span>
+
+                </div>
+
+
+                <a
+                    href="/agendar"
+                    class="btn-primary emerson-button"
+                >
+
+                    AGENDAR COM EMERSON
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<footer
+    id="contato"
+    class="footer"
+>
+
+    <div class="container footer-grid">
+
+        <div>
+
+            <img
+                src="{{ url_for('static', filename='images/logo-l24.png') }}"
+                class="footer-logo"
+                alt="L24"
+            >
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                CONTATO
+            </h3>
+
+            <p>
+                (11) 99999-9999
+            </p>
+
+            <p>
+                @l24barbearia
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h3>
+                HORÁRIOS
+            </h3>
+
+            <p>
+                Seg - Sex
+                09:00 - 20:00
+            </p>
+
+            <p>
+                Sábado
+                09:00 - 18:00
+            </p>
+
+            <p>
+                Domingo fechado
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <a
+                href="/agendar"
+                class="btn-outline"
+            >
+
+                AGENDAR AGORA
+
+            </a>
+
+        </div>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+const slides =
+    document.querySelectorAll(
+        ".carousel-slide"
+    );
+
+
+let slide = 0;
+
+let timer;
+
+
+function showSlide(
+    newSlide
+) {
+
+    if (
+        newSlide >=
+        slides.length
+    ) {
+
+        newSlide = 0;
+
+    }
+
+
+    if (
+        newSlide < 0
+    ) {
+
+        newSlide =
+            slides.length - 1;
+
+    }
+
+
+    slide = newSlide;
+
+
+    slides.forEach(
+
+        function(item) {
+
+            item.classList.remove(
+                "active"
+            );
+
+        }
+
+    );
+
+
+    slides[
+        slide
+    ].classList.add(
+        "active"
+    );
+
+}
+
+
+function restart() {
+
+    clearInterval(
+        timer
+    );
+
+
+    timer =
+        setInterval(
+
+            function() {
+
+                showSlide(
+                    slide + 1
+                );
+
+            },
+
+            10000
+
+        );
+
+}
+
+
+document
+.getElementById(
+    "nextSlide"
+)
+.onclick =
+    function() {
+
+        showSlide(
+            slide + 1
+        );
+
+        restart();
+
+    };
+
+
+document
+.getElementById(
+    "prevSlide"
+)
+.onclick =
+    function() {
+
+        showSlide(
+            slide - 1
+        );
+
+        restart();
+
+    };
+
+
+restart();
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Painel L24
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body>
+
+
+<header class="admin-header">
+
+    <div class="admin-brand">
+
+        <img
+            src="{{ url_for('static', filename='images/logo-l24.png') }}"
+            class="admin-logo"
+            alt="L24"
+        >
+
+
+        <div>
+
+            <span class="section-small">
+                PAINEL ADMINISTRATIVO
+            </span>
+
+            <h1>
+                L24 BARBEARIA
+            </h1>
+
+        </div>
+
+    </div>
+
+
+    <a
+        href="/"
+        class="btn-outline"
+    >
+        VER SITE
+    </a>
+
+</header>
+
+
+<main class="admin-container">
+
+
+    <h2 class="admin-title">
+        AGENDAMENTOS
+    </h2>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>CLIENTE</th>
+
+                    <th>TELEFONE</th>
+
+                    <th>SERVIÇO</th>
+
+                    <th>BARBEIRO</th>
+
+                    <th>DATA</th>
+
+                    <th>HORÁRIO</th>
+
+                    <th>STATUS</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for agendamento in agendamentos %}
+
+
+                <tr>
+
+                    <td>
+                        {{ agendamento["cliente"] }}
+                    </td>
+
+                    <td>
+                        {{ agendamento["telefone"] }}
+                    </td>
+
+                    <td>
+                        {{ agendamento["servico"] }}
+                    </td>
+
+                    <td>
+                        {{ agendamento["barbeiro"] }}
+                    </td>
+
+                    <td>
+                        {{ agendamento["data"] }}
+                    </td>
+
+                    <td>
+                        {{ agendamento["horario"] }}
+                    </td>
+
+                    <td>
+
+                        <span class="status-confirmado">
+
+                            {{ agendamento["status"] }}
+
+                        </span>
+
+                    </td>
+
+                </tr>
+
+
+                {% else %}
+
+
+                <tr>
+
+                    <td colspan="7">
+
+                        Nenhum agendamento encontrado.
+
+                    </td>
+
+                </tr>
+
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</main>
+
+
+</body>
+
+</html>

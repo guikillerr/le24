@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Agendar | L24 Barbearia
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body class="booking-body">
+
+
+<header class="booking-header">
+
+    <a href="/">
+
+        <img
+            src="{{ url_for('static', filename='images/logo-l24.png') }}"
+            class="booking-logo"
+            alt="L24 Barbearia"
+        >
+
+    </a>
+
+
+    <a
+        href="/"
+        class="booking-back"
+    >
+        ← VOLTAR
+    </a>
+
+</header>
+
+
+<main class="booking-container">
+
+
+    <span class="section-small">
+        AGENDAMENTO
+    </span>
+
+
+    <h1 class="booking-title">
+        RESERVE SEU HORÁRIO
+    </h1>
+
+
+    <!-- SERVIÇO -->
+
+    <section class="booking-step">
+
+        <span class="step-number">
+            01
+        </span>
+
+
+        <div>
+
+            <h2>
+                Escolha o serviço
+            </h2>
+
+
+            <p class="booking-description">
+
+                Primeiro selecione
+                o serviço desejado.
+
+            </p>
+
+
+            <div class="service-options">
+
+                {% for servico in servicos %}
+
+
+                <a
+                    href="{{ url_for(
+                        'agendar',
+                        servico=servico['id'],
+                        data=data_selecionada
+                    ) }}"
+
+                    class="
+                        python-service-card
+
+                        {% if
+                            servico_selecionado
+                            ==
+                            servico['id']
+                        %}
+
+                            selected
+
+                        {% endif %}
+                    "
+                >
+
+                    <div>
+
+                        <strong>
+                            {{ servico["nome"] }}
+                        </strong>
+
+
+                        <span>
+
+                            Aproximadamente
+
+                            {{ servico["duracao"] }}
+
+                            minutos
+
+                        </span>
+
+                    </div>
+
+
+                    {% if
+                        servico_selecionado
+                        ==
+                        servico["id"]
+                    %}
+
+                    <span class="python-check">
+                        ✓
+                    </span>
+
+                    {% endif %}
+
+                </a>
+
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- BARBEIRO -->
+
+    <section class="booking-step">
+
+        <span class="step-number">
+            02
+        </span>
+
+
+        <div>
+
+            <h2>
+                Seu barbeiro
+            </h2>
+
+
+            <div class="booking-barber-card">
+
+                <img
+                    src="{{ url_for('static', filename='images/emerson.png') }}"
+                    alt="Emerson"
+                >
+
+
+                <div>
+
+                    <small>
+                        SEU BARBEIRO
+                    </small>
+
+
+                    <strong>
+                        {{ emerson["nome"] }}
+                    </strong>
+
+
+                    <p>
+                        Cortes • Degradê • Barba
+                    </p>
+
+                </div>
+
+
+                <span class="selected-check">
+                    ✓
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CALENDÁRIO -->
+
+    <section class="booking-step">
+
+        <span class="step-number">
+            03
+        </span>
+
+
+        <div class="python-calendar-area">
+
+            <h2>
+                Escolha o dia
+            </h2>
+
+
+            <p class="booking-description">
+
+                Deslize horizontalmente para
+                visualizar os próximos dias.
+
+            </p>
+
+
+            <div class="python-calendar">
+
+
+                {% for dia in calendario %}
+
+
+                    {% if dia["domingo"] %}
+
+
+                        <div class="python-day closed">
+
+                            <span>
+                                {{ dia["semana"] }}
+                            </span>
+
+                            <strong>
+                                {{ "%02d"|format(dia["dia"]) }}
+                            </strong>
+
+                            <small>
+                                {{ dia["mes"] }}
+                            </small>
+
+                            <em>
+                                FECHADO
+                            </em>
+
+                        </div>
+
+
+                    {% elif dia["lotado"] %}
+
+
+                        <a
+                            href="{{ url_for(
+                                'agendar',
+                                servico=servico_selecionado,
+                                data=dia['data'],
+                                lotado=1
+                            ) }}"
+
+                            class="python-day soldout"
+                        >
+
+                            <span>
+                                {{ dia["semana"] }}
+                            </span>
+
+                            <strong>
+                                {{ "%02d"|format(dia["dia"]) }}
+                            </strong>
+
+                            <small>
+                                {{ dia["mes"] }}
+                            </small>
+
+                            <em>
+                                LOTADO
+                            </em>
+
+                        </a>
+
+
+                    {% else %}
+
+
+                        <a
+                            href="{{ url_for(
+                                'agendar',
+                                servico=servico_selecionado,
+                                data=dia['data']
+                            ) }}"
+
+                            class="
+                                python-day
+
+                                {% if
+                                    data_selecionada
+                                    ==
+                                    dia['data']
+                                %}
+                                    selected
+                                {% endif %}
+                            "
+                        >
+
+                            <span>
+                                {{ dia["semana"] }}
+                            </span>
+
+                            <strong>
+                                {{ "%02d"|format(dia["dia"]) }}
+                            </strong>
+
+                            <small>
+                                {{ dia["mes"] }}
+                            </small>
+
+                            <em>
+
+                                {{ dia["livres"] }}
+                                LIVRES
+
+                            </em>
+
+                        </a>
+
+
+                    {% endif %}
+
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- DIA LOTADO -->
+
+            {% if mostrar_lotado %}
+
+
+            <div class="python-soldout-message">
+
+                <div class="python-soldout-icon">
+                    !
+                </div>
+
+
+                <div>
+
+                    <span class="section-small">
+                        AGENDA COMPLETA
+                    </span>
+
+
+                    <h3>
+
+                        TODOS OS HORÁRIOS
+                        ESTÃO OCUPADOS
+
+                    </h3>
+
+
+                    <p>
+
+                        Não existem mais horários
+                        disponíveis para esse dia.
+
+                    </p>
+
+
+                    <p>
+
+                        Escolha outra data ou fale
+                        diretamente com a L24 para
+                        verificar um possível encaixe.
+
+                    </p>
+
+
+                    <a
+                        href="https://wa.me/{{ whatsapp }}?text=Olá!%20Vi%20no%20site%20da%20L24%20que%20todos%20os%20horários%20desse%20dia%20estão%20ocupados.%20Existe%20possibilidade%20de%20encaixe?"
+                        target="_blank"
+                        class="whatsapp-button"
+                    >
+
+                        FALAR NO WHATSAPP
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            {% endif %}
+
+
+            {% if
+                data_selecionada
+                and
+                not mostrar_lotado
+            %}
+
+
+            <div class="python-times-panel">
+
+                <div class="python-times-header">
+
+                    <div>
+
+                        <span class="section-small">
+                            HORÁRIOS DISPONÍVEIS
+                        </span>
+
+
+                        <h3>
+                            {{ data_selecionada }}
+                        </h3>
+
+                    </div>
+
+
+                    <strong>
+
+                        {{ horarios|length }}
+                        LIVRES
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- FORMULÁRIO -->
+
+    {% if
+        servico_selecionado
+        and
+        data_selecionada
+        and
+        horarios
+        and
+        not mostrar_lotado
+    %}
+
+
+    <form
+        method="POST"
+        action="{{ url_for('agendar') }}"
+        class="python-final-form"
+    >
+
+
+        <input
+            type="hidden"
+            name="servico"
+            value="{{ servico_selecionado }}"
+        >
+
+
+        <input
+            type="hidden"
+            name="data"
+            value="{{ data_selecionada }}"
+        >
+
+
+        <!-- HORÁRIO -->
+
+        <section class="booking-step">
+
+            <span class="step-number">
+                04
+            </span>
+
+
+            <div>
+
+                <h2>
+                    Escolha o horário
+                </h2>
+
+
+                <div class="python-times-grid">
+
+
+                    {% for horario in horarios %}
+
+
+                    <label class="python-time">
+
+                        <input
+                            type="radio"
+                            name="horario"
+                            value="{{ horario }}"
+                            required
+                        >
+
+
+                        <span>
+                            {{ horario }}
+                        </span>
+
+                    </label>
+
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- DADOS -->
+
+        <section class="booking-step">
+
+            <span class="step-number">
+                05
+            </span>
+
+
+            <div>
+
+                <h2>
+                    Seus dados
+                </h2>
+
+
+                <p class="booking-description">
+
+                    Preencha seus dados
+                    para confirmar a reserva.
+
+                </p>
+
+
+                <div class="customer-grid">
+
+                    <div>
+
+                        <label>
+                            NOME
+                        </label>
+
+
+                        <input
+                            type="text"
+                            name="cliente"
+                            placeholder="Seu nome"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label>
+                            WHATSAPP
+                        </label>
+
+
+                        <input
+                            type="tel"
+                            name="telefone"
+                            placeholder="(  ) _____-____"
+                            inputmode="numeric"
+                            autocomplete="tel"
+                            maxlength="15"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <div class="booking-submit">
+
+            <button type="submit">
+
+                CONFIRMAR AGENDAMENTO →
+
+            </button>
+
+        </div>
+
+    </form>
+
+
+    {% else %}
+
+
+        {% if not servico_selecionado %}
+
+        <div class="python-instruction">
+
+            ↑ Selecione primeiro
+            um serviço.
+
+        </div>
+
+
+        {% elif not data_selecionada %}
+
+
+        <div class="python-instruction">
+
+            ↑ Agora escolha
+            um dia disponível.
+
+        </div>
+
+
+        {% endif %}
+
+
+    {% endif %}
+
+
+</main>
+
+
+</body>
+
+</html>

@@ -1,0 +1,2448 @@
+:root {
+
+    --bg: #05090d;
+
+    --card: #0a1015;
+
+    --card2: #080d11;
+
+    --border: #293239;
+
+    --blue: #008cff;
+
+    --red: #ef3037;
+
+    --gray: #8b949b;
+
+    --green: #35c779;
+
+    --white: #f5f5f5;
+
+}
+
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    background: var(--bg);
+
+    color: white;
+
+    font-family:
+        "Montserrat",
+        Arial,
+        sans-serif;
+
+}
+
+
+a {
+
+    color: inherit;
+
+    text-decoration: none;
+
+}
+
+
+button,
+input {
+
+    font-family: inherit;
+
+}
+
+
+button {
+
+    cursor: pointer;
+
+}
+
+
+.container {
+
+    width: min(
+        1180px,
+        90%
+    );
+
+    margin: auto;
+
+}
+
+
+/* ======================================================
+BOTÕES
+====================================================== */
+
+.btn-primary,
+.btn-outline {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding:
+        14px 23px;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    border-radius: 4px;
+
+    transition: .2s;
+
+}
+
+
+.btn-primary {
+
+    background: var(--blue);
+
+    border:
+        1px solid var(--blue);
+
+}
+
+
+.btn-outline {
+
+    border:
+        1px solid #66717a;
+
+}
+
+
+.btn-outline:hover {
+
+    border-color: var(--blue);
+
+    color: var(--blue);
+
+}
+
+
+/* ======================================================
+NAVBAR
+====================================================== */
+
+.navbar {
+
+    min-height: 95px;
+
+    display: flex;
+
+    align-items: center;
+
+    border-bottom:
+        1px solid var(--border);
+
+    background:
+        rgba(
+            5,
+            9,
+            13,
+            .98
+        );
+
+}
+
+
+.navbar-content {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.logo-img {
+
+    width: 90px;
+
+    display: block;
+
+}
+
+
+.menu {
+
+    display: flex;
+
+    gap: 35px;
+
+}
+
+
+.menu a {
+
+    color: #ccc;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+
+.menu a:hover {
+
+    color: var(--blue);
+
+}
+
+
+/* ======================================================
+HERO
+====================================================== */
+
+.hero {
+
+    min-height: 570px;
+
+    position: relative;
+
+    background:
+
+        url(
+            "https://images.unsplash.com/photo-1621605815971-fbc98d665033"
+        );
+
+    background-size: cover;
+
+    background-position: center;
+
+}
+
+
+.hero-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            rgba(3,7,10,.98),
+
+            rgba(3,7,10,.72),
+
+            rgba(3,7,10,.4)
+
+        );
+
+}
+
+
+.hero-content {
+
+    min-height: 570px;
+
+    position: relative;
+
+    z-index: 2;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr .7fr;
+
+    align-items: center;
+
+}
+
+
+.hero-text h1 {
+
+    font-family: Anton;
+
+    font-size:
+        clamp(
+            55px,
+            6vw,
+            85px
+        );
+
+    font-weight: normal;
+
+    line-height: .95;
+
+}
+
+
+.hero-text h1 span {
+
+    color: var(--blue);
+
+}
+
+
+.hero-text p {
+
+    margin:
+        25px 0;
+
+    max-width: 500px;
+
+    color: #ccc;
+
+    line-height: 1.8;
+
+}
+
+
+.hero-logo-img {
+
+    width: min(
+        350px,
+        100%
+    );
+
+}
+
+
+/* ======================================================
+ESPECIALIDADES
+====================================================== */
+
+.specialties {
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.specialties-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+}
+
+
+.specialty {
+
+    min-height: 115px;
+
+    padding:
+        25px 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    border-right:
+        1px solid var(--border);
+
+}
+
+
+.specialty:last-child {
+
+    border-right: none;
+
+}
+
+
+.specialty-icon {
+
+    width: 55px;
+
+    height: 55px;
+
+    min-width: 55px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px solid currentColor;
+
+}
+
+
+.blue {
+
+    color: var(--blue);
+
+}
+
+
+.red {
+
+    color: var(--red);
+
+}
+
+
+.specialty h3 {
+
+    font-family: Anton;
+
+    font-weight: normal;
+
+}
+
+
+.specialty p {
+
+    margin-top: 5px;
+
+    color: var(--gray);
+
+    font-size: 10px;
+
+}
+
+
+/* ======================================================
+SEÇÕES
+====================================================== */
+
+.cuts-showcase,
+.about,
+.services,
+.barber-section {
+
+    padding:
+        80px 0;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.section-small {
+
+    color: var(--blue);
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 2px;
+
+}
+
+
+.section-title,
+.about h2 {
+
+    margin:
+        10px 0 35px;
+
+    font-family: Anton;
+
+    font-size: 40px;
+
+    font-weight: normal;
+
+}
+
+
+/* ======================================================
+GALERIA
+====================================================== */
+
+.carousel {
+
+    height: 600px;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--border);
+
+    background: var(--card);
+
+}
+
+
+.carousel-slide {
+
+    position: absolute;
+
+    inset: 0;
+
+    opacity: 0;
+
+    transform:
+        scale(1.03);
+
+    transition:
+        opacity .8s ease,
+        transform 1s ease;
+
+}
+
+
+.carousel-slide.active {
+
+    opacity: 1;
+
+    transform:
+        scale(1);
+
+}
+
+
+.carousel-slide img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+}
+
+
+.carousel-arrow {
+
+    width: 58px;
+
+    height: 58px;
+
+    position: absolute;
+
+    top: 50%;
+
+    z-index: 5;
+
+    transform:
+        translateY(-50%);
+
+    border-radius: 50%;
+
+    border:
+        1px solid #aaa;
+
+    background:
+        rgba(
+            0,
+            0,
+            0,
+            .7
+        );
+
+    color: white;
+
+    font-size: 20px;
+
+}
+
+
+.carousel-arrow:hover {
+
+    background: var(--blue);
+
+    border-color: var(--blue);
+
+}
+
+
+.carousel-prev {
+
+    left: 25px;
+
+}
+
+
+.carousel-next {
+
+    right: 25px;
+
+}
+
+
+/* ======================================================
+SOBRE
+====================================================== */
+
+.about-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 60px;
+
+    align-items: center;
+
+}
+
+
+.about h2 span {
+
+    color: var(--red);
+
+}
+
+
+.about p {
+
+    margin-bottom: 30px;
+
+    color: var(--gray);
+
+    line-height: 1.8;
+
+}
+
+
+.about-image img {
+
+    width: 100%;
+
+    height: 350px;
+
+    object-fit: cover;
+
+    border:
+        1px solid var(--border);
+
+}
+
+
+/* ======================================================
+SERVIÇOS
+====================================================== */
+
+.services-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
+
+    gap: 15px;
+
+}
+
+
+.service-card {
+
+    min-height: 160px;
+
+    padding: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    border:
+        1px solid var(--border);
+
+    background: var(--card);
+
+}
+
+
+.service-icon {
+
+    width: 50px;
+
+    height: 50px;
+
+    min-width: 50px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid var(--blue);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--blue);
+
+}
+
+
+.service-card h3 {
+
+    font-family: Anton;
+
+    font-size: 24px;
+
+    font-weight: normal;
+
+}
+
+
+.service-card p {
+
+    margin-top: 7px;
+
+    color: var(--gray);
+
+    font-size: 11px;
+
+}
+
+
+/* ======================================================
+EMERSON
+====================================================== */
+
+.emerson-card {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    min-height: 520px;
+
+    border:
+        1px solid var(--border);
+
+    background: var(--card);
+
+}
+
+
+.emerson-photo-wrapper {
+
+    position: relative;
+
+    min-height: 520px;
+
+    overflow: hidden;
+
+}
+
+
+.emerson-photo {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    object-position:
+        center 30%;
+
+}
+
+
+.emerson-content {
+
+    padding: 60px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+}
+
+
+.emerson-content h3 {
+
+    font-family: Anton;
+
+    font-size:
+        clamp(
+            60px,
+            7vw,
+            80px
+        );
+
+    font-weight: normal;
+
+}
+
+
+.emerson-content > strong {
+
+    color: var(--red);
+
+}
+
+
+.emerson-line {
+
+    width: 55px;
+
+    height: 3px;
+
+    margin:
+        25px 0;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--red)
+        );
+
+}
+
+
+.emerson-content p {
+
+    color: var(--gray);
+
+    line-height: 1.8;
+
+}
+
+
+.emerson-skills {
+
+    margin-top: 25px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+}
+
+
+.emerson-skills span {
+
+    padding:
+        8px 12px;
+
+    border:
+        1px solid var(--border);
+
+    font-size: 9px;
+
+}
+
+
+.emerson-button {
+
+    width: fit-content;
+
+    margin-top: 30px;
+
+}
+
+
+/* ======================================================
+FOOTER
+====================================================== */
+
+.footer {
+
+    padding:
+        50px 0;
+
+}
+
+
+.footer-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap: 40px;
+
+    align-items: center;
+
+}
+
+
+.footer-logo {
+
+    width: 130px;
+
+}
+
+
+.footer h3 {
+
+    margin-bottom: 15px;
+
+    color: var(--blue);
+
+}
+
+
+.footer p {
+
+    margin-top: 7px;
+
+    color: var(--gray);
+
+    font-size: 11px;
+
+    line-height: 1.6;
+
+}
+
+
+/* ======================================================
+CABEÇALHO AGENDAMENTO
+====================================================== */
+
+.booking-header {
+
+    min-height: 90px;
+
+    padding:
+        8px 6%;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.booking-logo {
+
+    width: 80px;
+
+}
+
+
+.booking-back {
+
+    color: #aaa;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+}
+
+
+.booking-container {
+
+    width: min(
+        1050px,
+        90%
+    );
+
+    margin:
+        60px auto 100px;
+
+}
+
+
+.booking-title {
+
+    margin:
+        10px 0 45px;
+
+    font-family: Anton;
+
+    font-size:
+        clamp(
+            45px,
+            6vw,
+            60px
+        );
+
+    font-weight: normal;
+
+}
+
+
+.booking-step {
+
+    padding:
+        45px 0;
+
+    display: grid;
+
+    grid-template-columns:
+        70px 1fr;
+
+    border-top:
+        1px solid var(--border);
+
+}
+
+
+.step-number {
+
+    color: #3a444b;
+
+    font-family: Anton;
+
+    font-size: 25px;
+
+}
+
+
+.booking-step h2 {
+
+    margin-bottom: 20px;
+
+    font-family: Anton;
+
+    font-size: 30px;
+
+    font-weight: normal;
+
+}
+
+
+.booking-description {
+
+    color: var(--gray);
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+    margin:
+        -10px 0 22px;
+
+}
+
+
+/* ======================================================
+SERVIÇO AGENDAMENTO
+====================================================== */
+
+.service-options {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            1fr
+        );
+
+    gap: 15px;
+
+}
+
+
+.python-service-card {
+
+    min-height: 105px;
+
+    padding: 22px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 20px;
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    transition: .2s;
+
+}
+
+
+.python-service-card:hover {
+
+    border-color: var(--blue);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.python-service-card.selected {
+
+    border-color: var(--blue);
+
+    background:
+        rgba(
+            0,
+            140,
+            255,
+            .08
+        );
+
+}
+
+
+.python-service-card strong {
+
+    display: block;
+
+    font-family: Anton;
+
+    font-size: 23px;
+
+    font-weight: normal;
+
+}
+
+
+.python-service-card span {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--gray);
+
+    font-size: 10px;
+
+}
+
+
+.python-check {
+
+    width: 35px;
+
+    height: 35px;
+
+    min-width: 35px;
+
+    margin: 0 !important;
+
+    border-radius: 50%;
+
+    display: flex !important;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--blue);
+
+    color: white !important;
+
+    font-size: 16px !important;
+
+    font-weight: 800;
+
+}
+
+
+/* ======================================================
+BARBEIRO NO AGENDAMENTO
+====================================================== */
+
+.booking-barber-card {
+
+    max-width: 620px;
+
+    padding: 20px;
+
+    display: grid;
+
+    grid-template-columns:
+        120px 1fr 50px;
+
+    gap: 20px;
+
+    align-items: center;
+
+    border:
+        1px solid var(--blue);
+
+    background: var(--card);
+
+}
+
+
+.booking-barber-card img {
+
+    width: 120px;
+
+    height: 130px;
+
+    object-fit: cover;
+
+    object-position:
+        center 25%;
+
+}
+
+
+.booking-barber-card strong {
+
+    display: block;
+
+    font-family: Anton;
+
+    font-size: 32px;
+
+    font-weight: normal;
+
+}
+
+
+.booking-barber-card small {
+
+    color: var(--blue);
+
+}
+
+
+.booking-barber-card p {
+
+    margin-top: 5px;
+
+    color: var(--gray);
+
+    font-size: 11px;
+
+}
+
+
+.selected-check {
+
+    width: 40px;
+
+    height: 40px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--blue);
+
+}
+
+
+/* ======================================================
+CALENDÁRIO PYTHON
+====================================================== */
+
+.python-calendar {
+
+    display: flex;
+
+    gap: 10px;
+
+    overflow-x: auto;
+
+    padding:
+        5px 0 20px;
+
+}
+
+
+.python-day {
+
+    flex:
+        0 0 90px;
+
+    min-height: 135px;
+
+    padding:
+        16px 8px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    text-align: center;
+
+    transition: .2s;
+
+}
+
+
+.python-day:hover {
+
+    border-color: var(--blue);
+
+    transform:
+        translateY(-3px);
+
+}
+
+
+.python-day > span {
+
+    color: var(--gray);
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+}
+
+
+.python-day > strong {
+
+    margin:
+        6px 0;
+
+    font-family: Anton;
+
+    font-size: 32px;
+
+    font-weight: normal;
+
+}
+
+
+.python-day > small {
+
+    color: var(--gray);
+
+    font-size: 8px;
+
+}
+
+
+.python-day > em {
+
+    margin-top: 10px;
+
+    color: var(--green);
+
+    font-size: 7px;
+
+    font-style: normal;
+
+    font-weight: 800;
+
+}
+
+
+.python-day.selected {
+
+    background: var(--blue);
+
+    border-color: var(--blue);
+
+}
+
+
+.python-day.selected span,
+.python-day.selected small,
+.python-day.selected em {
+
+    color: white;
+
+}
+
+
+/* LOTADO */
+
+.python-day.soldout {
+
+    position: relative;
+
+    opacity: .55;
+
+    border-color:
+        rgba(
+            239,
+            48,
+            55,
+            .45
+        );
+
+}
+
+
+.python-day.soldout em {
+
+    color: var(--red);
+
+}
+
+
+.python-day.soldout:hover {
+
+    border-color: var(--red);
+
+}
+
+
+/* FECHADO */
+
+.python-day.closed {
+
+    opacity: .25;
+
+    cursor: default;
+
+}
+
+
+.python-day.closed em {
+
+    color: var(--gray);
+
+}
+
+
+/* ======================================================
+DIA LOTADO
+====================================================== */
+
+.python-soldout-message {
+
+    margin-top: 30px;
+
+    padding: 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        75px 1fr;
+
+    gap: 25px;
+
+    border:
+        1px solid
+        rgba(
+            239,
+            48,
+            55,
+            .5
+        );
+
+    background:
+
+        linear-gradient(
+            120deg,
+            rgba(
+                239,
+                48,
+                55,
+                .08
+            ),
+            var(--card)
+        );
+
+}
+
+
+.python-soldout-icon {
+
+    width: 65px;
+
+    height: 65px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid var(--red);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: var(--red);
+
+    font-family: Anton;
+
+    font-size: 36px;
+
+}
+
+
+.python-soldout-message h3 {
+
+    margin:
+        8px 0 15px;
+
+    font-family: Anton;
+
+    font-size: 30px;
+
+    font-weight: normal;
+
+}
+
+
+.python-soldout-message p {
+
+    margin-top: 6px;
+
+    color: var(--gray);
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+}
+
+
+.whatsapp-button {
+
+    width: fit-content;
+
+    min-height: 52px;
+
+    margin-top: 20px;
+
+    padding:
+        0 22px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 5px;
+
+    background: #25d366;
+
+    color: white;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+}
+
+
+/* ======================================================
+PAINEL HORÁRIOS
+====================================================== */
+
+.python-times-panel {
+
+    margin-top: 30px;
+
+    padding: 25px;
+
+    border:
+        1px solid var(--border);
+
+    background: var(--card2);
+
+}
+
+
+.python-times-header {
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+}
+
+
+.python-times-header h3 {
+
+    margin-top: 5px;
+
+}
+
+
+.python-times-header > strong {
+
+    color: var(--green);
+
+    font-size: 10px;
+
+}
+
+
+/* ======================================================
+HORÁRIOS
+====================================================== */
+
+.python-times-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            5,
+            1fr
+        );
+
+    gap: 10px;
+
+}
+
+
+.python-time {
+
+    position: relative;
+
+}
+
+
+.python-time input {
+
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+}
+
+
+.python-time span {
+
+    min-height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    color: white;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+
+}
+
+
+.python-time span:hover {
+
+    border-color: var(--blue);
+
+}
+
+
+.python-time
+input:checked
++
+span {
+
+    background: var(--blue);
+
+    border-color: var(--blue);
+
+}
+
+
+/* ======================================================
+DADOS CLIENTE
+====================================================== */
+
+.customer-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 15px;
+
+}
+
+
+.customer-grid label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--gray);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+}
+
+
+.customer-grid input {
+
+    width: 100%;
+
+    padding: 15px;
+
+    background: var(--card);
+
+    border:
+        1px solid var(--border);
+
+    color: white;
+
+    outline: none;
+
+}
+
+
+.customer-grid input:focus {
+
+    border-color: var(--blue);
+
+}
+
+
+.booking-submit {
+
+    padding:
+        30px 0;
+
+    text-align: right;
+
+}
+
+
+.booking-submit button {
+
+    padding:
+        17px 25px;
+
+    border: none;
+
+    background: var(--blue);
+
+    color: white;
+
+    font-weight: 800;
+
+}
+
+
+.python-instruction {
+
+    margin-top: 25px;
+
+    padding: 20px;
+
+    border:
+        1px dashed #35414a;
+
+    color: var(--gray);
+
+    text-align: center;
+
+    font-size: 12px;
+
+}
+
+
+/* ======================================================
+CONFIRMAÇÃO
+====================================================== */
+
+.confirmation-page {
+
+    min-height: 100vh;
+
+    background:
+
+        radial-gradient(
+            circle at top,
+            rgba(
+                0,
+                140,
+                255,
+                .08
+            ),
+            transparent 35%
+        ),
+
+        var(--bg);
+
+}
+
+
+.confirmation-wrapper {
+
+    width: min(
+        600px,
+        90%
+    );
+
+    margin: auto;
+
+    padding:
+        45px 0 70px;
+
+    text-align: center;
+
+}
+
+
+.confirmation-logo {
+
+    width: 230px;
+
+}
+
+
+.confirmation-check {
+
+    width: 100px;
+
+    height: 100px;
+
+    margin:
+        25px auto;
+
+    border-radius: 50%;
+
+    border:
+        2px solid var(--blue);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 55px;
+
+}
+
+
+.confirmation-wrapper h2 {
+
+    font-family: Anton;
+
+    font-weight: normal;
+
+}
+
+
+.confirmation-wrapper > h1 {
+
+    font-family: Anton;
+
+    font-size:
+        clamp(
+            55px,
+            9vw,
+            70px
+        );
+
+    font-weight: normal;
+
+}
+
+
+.confirmation-wrapper > p {
+
+    color: var(--gray);
+
+}
+
+
+.confirmation-card {
+
+    margin-top: 30px;
+
+    padding:
+        10px 30px;
+
+    text-align: left;
+
+    border:
+        1px solid #4c5961;
+
+    border-radius: 20px;
+
+    background: var(--card);
+
+}
+
+
+.confirmation-card > div {
+
+    min-height: 85px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.confirmation-card > div:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.confirmation-card span {
+
+    color: var(--gray);
+
+    font-size: 11px;
+
+}
+
+
+.confirmation-card strong {
+
+    margin-top: 5px;
+
+    font-size: 18px;
+
+}
+
+
+.confirmation-reminder {
+
+    margin-top: 20px;
+
+    padding: 20px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 15px;
+
+    background: var(--card);
+
+}
+
+
+.confirmation-reminder p {
+
+    margin-top: 7px;
+
+    color: var(--gray);
+
+    font-size: 12px;
+
+}
+
+
+.confirmation-main-button {
+
+    min-height: 65px;
+
+    margin-top: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--red)
+        );
+
+    font-weight: 800;
+
+}
+
+
+.confirmation-back {
+
+    display: block;
+
+    margin-top: 25px;
+
+    color: #aaa;
+
+}
+
+
+/* ======================================================
+MEUS AGENDAMENTOS
+====================================================== */
+
+.appointments-container {
+
+    width: min(
+        900px,
+        90%
+    );
+
+    margin:
+        60px auto;
+
+}
+
+
+.appointments-title {
+
+    margin:
+        10px 0 30px;
+
+    font-family: Anton;
+
+    font-size: 50px;
+
+    font-weight: normal;
+
+}
+
+
+.appointment-card {
+
+    margin-top: 15px;
+
+    padding: 25px;
+
+    display: grid;
+
+    grid-template-columns:
+        150px 1fr auto;
+
+    gap: 20px;
+
+    align-items: center;
+
+    border:
+        1px solid var(--border);
+
+    background: var(--card);
+
+}
+
+
+.appointment-card h2 {
+
+    color: var(--blue);
+
+    font-family: Anton;
+
+    font-size: 30px;
+
+    font-weight: normal;
+
+}
+
+
+.appointment-card p {
+
+    color: var(--gray);
+
+}
+
+
+.status-confirmado {
+
+    padding:
+        7px 12px;
+
+    border:
+        1px solid var(--blue);
+
+    border-radius: 20px;
+
+    color: var(--blue);
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+}
+
+
+.empty-appointments {
+
+    padding: 40px;
+
+    border:
+        1px solid var(--border);
+
+    text-align: center;
+
+    color: var(--gray);
+
+}
+
+
+/* ======================================================
+ADMIN
+====================================================== */
+
+.admin-header {
+
+    min-height: 100px;
+
+    padding:
+        15px 5%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.admin-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+}
+
+
+.admin-logo {
+
+    width: 80px;
+
+}
+
+
+.admin-brand h1 {
+
+    font-family: Anton;
+
+    font-weight: normal;
+
+}
+
+
+.admin-container {
+
+    width: 90%;
+
+    max-width: 1400px;
+
+    margin:
+        50px auto;
+
+}
+
+
+.admin-title {
+
+    margin-bottom: 25px;
+
+    font-family: Anton;
+
+    font-size: 40px;
+
+    font-weight: normal;
+
+}
+
+
+.table-container {
+
+    overflow-x: auto;
+
+}
+
+
+table {
+
+    width: 100%;
+
+    min-width: 950px;
+
+    border-collapse: collapse;
+
+    background: var(--card);
+
+}
+
+
+th {
+
+    color: var(--gray);
+
+    font-size: 9px;
+
+}
+
+
+th,
+td {
+
+    padding: 15px;
+
+    border:
+        1px solid var(--border);
+
+    text-align: left;
+
+}
+
+
+/* ======================================================
+RESPONSIVO
+====================================================== */
+
+@media (
+    max-width: 800px
+) {
+
+    .menu {
+
+        display: none;
+
+    }
+
+
+    .hero-content {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .hero-logo-img {
+
+        display: none;
+
+    }
+
+
+    .specialties-grid,
+    .services-grid,
+    .about-grid,
+    .emerson-card {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .emerson-photo-wrapper {
+
+        min-height: 450px;
+
+    }
+
+
+    .footer-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .python-times-grid {
+
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+
+    }
+
+}
+
+
+@media (
+    max-width: 550px
+) {
+
+    .navbar {
+
+        min-height: 80px;
+
+    }
+
+
+    .logo-img {
+
+        width: 65px;
+
+    }
+
+
+    .hero-text h1 {
+
+        font-size: 52px;
+
+    }
+
+
+    .carousel {
+
+        height: 350px;
+
+    }
+
+
+    .footer-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .booking-step {
+
+        grid-template-columns:
+            1fr;
+
+        gap: 15px;
+
+    }
+
+
+    .service-options,
+    .customer-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .booking-barber-card {
+
+        grid-template-columns:
+            80px 1fr 35px;
+
+    }
+
+
+    .booking-barber-card img {
+
+        width: 80px;
+
+        height: 95px;
+
+    }
+
+
+    .python-times-grid {
+
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+
+    }
+
+
+    .python-soldout-message {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .emerson-content {
+
+        padding:
+            35px 25px;
+
+    }
+
+
+    .appointment-card {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}

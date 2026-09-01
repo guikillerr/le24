@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Agendamento confirmado | L24
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+</head>
+
+
+<body class="confirmation-page">
+
+
+<main class="confirmation-wrapper">
+
+
+    <img
+        src="{{ url_for('static', filename='images/logo-l24.png') }}"
+        class="confirmation-logo"
+        alt="L24"
+    >
+
+
+    <div class="confirmation-check">
+        ✓
+    </div>
+
+
+    <h2>
+        AGENDAMENTO
+    </h2>
+
+
+    <h1>
+        CONFIRMADO!
+    </h1>
+
+
+    <p>
+        Seu horário está reservado.
+    </p>
+
+
+    <div class="confirmation-card">
+
+
+        <div>
+
+            <span>
+                DATA
+            </span>
+
+            <strong>
+
+                {{ agendamento["data"] }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                HORÁRIO
+            </span>
+
+            <strong>
+
+                {{ agendamento["horario"] }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                SERVIÇO
+            </span>
+
+            <strong>
+
+                {{ agendamento["servico"] }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                BARBEIRO
+            </span>
+
+            <strong>
+
+                {{ agendamento["barbeiro"] }}
+
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <span>
+                BARBEARIA
+            </span>
+
+            <strong>
+                L24 Barbearia
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="confirmation-reminder">
+
+        <strong>
+            LEMBRETE
+        </strong>
+
+        <p>
+
+            Chegue com aproximadamente
+            10 minutos de antecedência.
+
+        </p>
+
+    </div>
+
+
+    <a
+        href="/meus-agendamentos"
+        class="confirmation-main-button"
+    >
+
+        VER MEUS AGENDAMENTOS
+
+    </a>
+
+
+    <a
+        href="/"
+        class="confirmation-back"
+    >
+
+        ← VOLTAR PARA O INÍCIO
+
+    </a>
+
+
+</main>
+
+
+</body>
+
+</html>
