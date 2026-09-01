@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Login Administrativo | L24 Barbearia
+    </title>
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <style>
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 25px;
+
+            background:
+                radial-gradient(
+                    circle at top left,
+                    rgba(0, 140, 255, 0.13),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at bottom right,
+                    rgba(255, 30, 55, 0.10),
+                    transparent 35%
+                ),
+                #07090c;
+
+            color: white;
+
+            font-family:
+                "Montserrat",
+                sans-serif;
+
+        }
+
+
+        .login-container {
+
+            width: 100%;
+
+            max-width: 430px;
+
+        }
+
+
+        .login-card {
+
+            padding: 42px;
+
+            border:
+                1px solid #252a31;
+
+            border-radius: 18px;
+
+            background:
+                rgba(
+                    15,
+                    18,
+                    23,
+                    0.96
+                );
+
+            box-shadow:
+                0 30px 80px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.45
+                );
+
+        }
+
+
+        .logo-area {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        .logo-area img {
+
+            width: 115px;
+
+            max-width: 100%;
+
+        }
+
+
+        .admin-small {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #168cff;
+
+            font-size: 11px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-align: center;
+
+        }
+
+
+        h1 {
+
+            margin-bottom: 8px;
+
+            font-family:
+                "Anton",
+                sans-serif;
+
+            font-size: 38px;
+
+            font-weight: normal;
+
+            letter-spacing: 1px;
+
+            text-align: center;
+
+        }
+
+
+        .subtitle {
+
+            margin-bottom: 30px;
+
+            color: #8d949e;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            text-align: center;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 19px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #b8bec6;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+        }
+
+
+        input {
+
+            width: 100%;
+
+            min-height: 54px;
+
+            padding:
+                0 16px;
+
+            border:
+                1px solid #30363f;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            background: #0a0d11;
+
+            color: white;
+
+            font-family:
+                "Montserrat",
+                sans-serif;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+
+        }
+
+
+        input:focus {
+
+            border-color: #168cff;
+
+            box-shadow:
+                0 0 0 3px
+                rgba(
+                    22,
+                    140,
+                    255,
+                    0.08
+                );
+
+        }
+
+
+        input::placeholder {
+
+            color: #555c65;
+
+        }
+
+
+        .login-button {
+
+            width: 100%;
+
+            min-height: 56px;
+
+            margin-top: 8px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #168cff,
+                    #006fe8
+                );
+
+            color: white;
+
+            font-family:
+                "Montserrat",
+                sans-serif;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            transition:
+                transform 0.2s,
+                box-shadow 0.2s;
+
+        }
+
+
+        .login-button:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 12px 30px
+                rgba(
+                    0,
+                    120,
+                    255,
+                    0.20
+                );
+
+        }
+
+
+        .erro {
+
+            margin-bottom: 20px;
+
+            padding: 13px 15px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    60,
+                    70,
+                    0.35
+                );
+
+            border-radius: 8px;
+
+            background:
+                rgba(
+                    255,
+                    40,
+                    50,
+                    0.08
+                );
+
+            color: #ff626b;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-align: center;
+
+        }
+
+
+        .voltar {
+
+            display: block;
+
+            margin-top: 23px;
+
+            color: #707780;
+
+            font-size: 11px;
+
+            font-weight: 600;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+
+        }
+
+
+        .voltar:hover {
+
+            color: white;
+
+        }
+
+
+        .seguranca {
+
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top:
+                1px solid #22272d;
+
+            color: #575e67;
+
+            font-size: 10px;
+
+            line-height: 1.6;
+
+            text-align: center;
+
+        }
+
+
+        @media (
+            max-width: 500px
+        ) {
+
+            body {
+
+                padding: 16px;
+
+            }
+
+
+            .login-card {
+
+                padding:
+                    32px 23px;
+
+            }
+
+
+            h1 {
+
+                font-size: 33px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <div class="login-card">
+
+
+        <div class="logo-area">
+
+            <img
+                src="{{ url_for('static', filename='images/logo-l24.png') }}"
+                alt="L24 Barbearia"
+            >
+
+        </div>
+
+
+        <span class="admin-small">
+
+            ÁREA RESTRITA
+
+        </span>
+
+
+        <h1>
+
+            PAINEL ADMIN
+
+        </h1>
+
+
+        <p class="subtitle">
+
+            Entre com seus dados para acessar
+            os agendamentos da L24 Barbearia.
+
+        </p>
+
+
+        {% if erro %}
+
+            <div class="erro">
+
+                {{ erro }}
+
+            </div>
+
+        {% endif %}
+
+
+        <form
+            method="POST"
+            action="{{ url_for('login') }}"
+        >
+
+
+            <div class="form-group">
+
+                <label for="usuario">
+
+                    USUÁRIO
+
+                </label>
+
+
+                <input
+                    type="text"
+                    id="usuario"
+                    name="usuario"
+                    placeholder="Digite seu usuário"
+                    autocomplete="username"
+                    required
+                    autofocus
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="senha">
+
+                    SENHA
+
+                </label>
+
+
+                <input
+                    type="password"
+                    id="senha"
+                    name="senha"
+                    placeholder="Digite sua senha"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="login-button"
+            >
+
+                ENTRAR NO PAINEL
+
+            </button>
+
+
+        </form>
+
+
+        <a
+            href="/"
+            class="voltar"
+        >
+
+            ← VOLTAR PARA O SITE
+
+        </a>
+
+
+        <div class="seguranca">
+
+            🔒 Acesso exclusivo da administração L24.
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

@@ -10,6 +10,8 @@ from flask import (
 
 import sqlite3
 import re
+import os
+import hmac
 
 from datetime import (
     datetime,
@@ -20,7 +22,36 @@ from datetime import (
 
 app = Flask(__name__)
 
-app.secret_key = "l24-chave-desenvolvimento"
+
+# ==========================================================
+# CONFIGURAÇÕES
+# ==========================================================
+
+app.secret_key = os.environ.get(
+    "SECRET_KEY",
+    "l24-chave-desenvolvimento"
+)
+
+
+# Usuário e senha do painel administrativo.
+#
+# LOCALMENTE:
+# usuário: admin
+# senha: l24admin
+#
+# No Render, você pode definir:
+# ADMIN_USER
+# ADMIN_PASSWORD
+
+ADMIN_USER = os.environ.get(
+    "ADMIN_USER",
+    "emerson"
+)
+
+ADMIN_PASSWORD = os.environ.get(
+    "ADMIN_PASSWORD",
+    "adminadmin"
+)
 
 
 # ==========================================================
@@ -52,6 +83,10 @@ def criar_tabelas():
     banco = conectar_banco()
 
 
+    # ======================================================
+    # BARBEIROS
+    # ======================================================
+
     banco.execute("""
         CREATE TABLE IF NOT EXISTS barbeiros (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -59,6 +94,10 @@ def criar_tabelas():
         )
     """)
 
+
+    # ======================================================
+    # SERVIÇOS
+    # ======================================================
 
     banco.execute("""
         CREATE TABLE IF NOT EXISTS servicos (
@@ -69,6 +108,10 @@ def criar_tabelas():
         )
     """)
 
+
+    # ======================================================
+    # AGENDAMENTOS
+    # ======================================================
 
     banco.execute("""
         CREATE TABLE IF NOT EXISTS agendamentos (
@@ -103,7 +146,9 @@ def criar_tabelas():
 
     emerson = banco.execute("""
         SELECT id
+
         FROM barbeiros
+
         WHERE nome = ?
     """, (
         "Emerson",
@@ -129,18 +174,22 @@ def criar_tabelas():
         emerson_id = emerson["id"]
 
 
-    # Mantém agendamentos antigos ligados ao Emerson.
+    # Mantém agendamentos antigos associados ao Emerson.
 
     banco.execute("""
         UPDATE agendamentos
+
         SET barbeiro_id = ?
     """, (
         emerson_id,
     ))
 
 
+    # Remove qualquer outro barbeiro.
+
     banco.execute("""
         DELETE FROM barbeiros
+
         WHERE id != ?
     """, (
         emerson_id,
@@ -148,11 +197,12 @@ def criar_tabelas():
 
 
     # ======================================================
-    # SERVIÇOS
+    # SERVIÇOS PADRÃO
     # ======================================================
 
     quantidade_servicos = banco.execute("""
         SELECT COUNT(*)
+
         FROM servicos
     """).fetchone()[0]
 
@@ -297,7 +347,7 @@ def buscar_horarios_disponiveis(
         return []
 
 
-    # Não aceita data passada.
+    # Não permite datas passadas.
 
     if data_objeto < date.today():
 
@@ -327,7 +377,6 @@ def buscar_horarios_disponiveis(
     """, (
 
         barbeiro_id,
-
         data_agendamento
 
     )).fetchall()
@@ -371,6 +420,7 @@ def criar_calendario(
 
 
     nomes_semana = [
+
         "SEG",
         "TER",
         "QUA",
@@ -378,10 +428,12 @@ def criar_calendario(
         "SEX",
         "SÁB",
         "DOM"
+
     ]
 
 
     nomes_meses = [
+
         "JAN",
         "FEV",
         "MAR",
@@ -394,10 +446,12 @@ def criar_calendario(
         "OUT",
         "NOV",
         "DEZ"
+
     ]
 
 
     nomes_meses_completos = [
+
         "JANEIRO",
         "FEVEREIRO",
         "MARÇO",
@@ -410,13 +464,16 @@ def criar_calendario(
         "OUTUBRO",
         "NOVEMBRO",
         "DEZEMBRO"
+
     ]
 
 
     hoje = date.today()
 
 
-    # Primeiro dia do mês seguinte.
+    # ======================================================
+    # PRIMEIRO DIA DO PRÓXIMO MÊS
+    # ======================================================
 
     if hoje.month == 12:
 
@@ -435,8 +492,9 @@ def criar_calendario(
         )
 
 
-    # Primeiro dia do mês depois do próximo.
-    # O calendário vai até o último dia do próximo mês.
+    # ======================================================
+    # PRIMEIRO DIA DO MÊS DEPOIS DO PRÓXIMO
+    # ======================================================
 
     if primeiro_proximo_mes.month == 12:
 
@@ -493,9 +551,11 @@ def criar_calendario(
 
         calendario.append({
 
-            "data": data_texto,
+            "data":
+                data_texto,
 
-            "dia": dia.day,
+            "dia":
+                dia.day,
 
             "semana":
                 nomes_semana[
@@ -536,38 +596,6 @@ def criar_calendario(
 
 
 # ==========================================================
-# HOME
-# ==========================================================
-
-@app.route("/")
-def index():
-
-    banco = conectar_banco()
-
-
-    barbeiros = banco.execute("""
-        SELECT *
-        FROM barbeiros
-    """).fetchall()
-
-
-    servicos = banco.execute("""
-        SELECT *
-        FROM servicos
-    """).fetchall()
-
-
-    banco.close()
-
-
-    return render_template(
-        "index.html",
-        barbeiros=barbeiros,
-        servicos=servicos
-    )
-
-
-# ==========================================================
 # VALIDAR TELEFONE BRASILEIRO
 # ==========================================================
 
@@ -591,8 +619,9 @@ def telefone_brasileiro_plausivel(
     )
 
 
-    # Celular brasileiro com DDD:
-    # precisa possuir 11 números.
+    # Precisa ter DDD + celular.
+    # Exemplo:
+    # 11987654321
 
     if len(telefone) != 11:
 
@@ -602,72 +631,109 @@ def telefone_brasileiro_plausivel(
     ddds_validos = {
 
         "11", "12", "13", "14",
-        "15", "16", "17", "18",
-        "19",
+        "15", "16", "17", "18", "19",
 
         "21", "22", "24",
+
         "27", "28",
 
         "31", "32", "33", "34",
         "35", "37", "38",
 
         "41", "42", "43", "44",
-        "45", "46", "47", "48",
-        "49",
+        "45", "46", "47", "48", "49",
 
         "51", "53", "54", "55",
 
         "61", "62", "63", "64",
-        "65", "66", "67", "68",
-        "69",
+        "65", "66", "67", "68", "69",
 
         "71", "73", "74", "75",
         "77", "79",
 
         "81", "82", "83", "84",
-        "85", "86", "87", "88",
-        "89",
+        "85", "86", "87", "88", "89",
 
         "91", "92", "93", "94",
-        "95", "96", "97", "98",
-        "99"
+        "95", "96", "97", "98", "99"
 
     }
 
 
-    if telefone[:2] not in ddds_validos:
+    ddd = telefone[:2]
+
+
+    if ddd not in ddds_validos:
 
         return False
 
 
-    # Depois do DDD,
-    # celular brasileiro usa 9.
+    # Celular brasileiro começa com 9
+    # depois dos dois números do DDD.
 
     if telefone[2] != "9":
 
         return False
 
 
-    # Evita coisas como:
-    # 11111111111
+    # Evita números completamente repetidos.
 
-    if len(set(telefone)) == 1:
+    if len(
+        set(
+            telefone
+        )
+    ) == 1:
 
         return False
 
 
-    # Também evita o número local
-    # inteiro repetido.
-
     numero_local = telefone[2:]
 
 
-    if len(set(numero_local)) == 1:
+    if len(
+        set(
+            numero_local
+        )
+    ) == 1:
 
         return False
 
 
     return True
+
+
+# ==========================================================
+# HOME
+# ==========================================================
+
+@app.route("/")
+def index():
+
+    banco = conectar_banco()
+
+
+    barbeiros = banco.execute("""
+        SELECT *
+
+        FROM barbeiros
+    """).fetchall()
+
+
+    servicos = banco.execute("""
+        SELECT *
+
+        FROM servicos
+    """).fetchall()
+
+
+    banco.close()
+
+
+    return render_template(
+        "index.html",
+        barbeiros=barbeiros,
+        servicos=servicos
+    )
 
 
 # ==========================================================
@@ -688,7 +754,9 @@ def agendar():
 
     emerson = banco.execute("""
         SELECT *
+
         FROM barbeiros
+
         WHERE nome = ?
     """, (
         "Emerson",
@@ -697,6 +765,7 @@ def agendar():
 
     servicos = banco.execute("""
         SELECT *
+
         FROM servicos
     """).fetchall()
 
@@ -704,11 +773,19 @@ def agendar():
     banco.close()
 
 
+    if emerson is None:
+
+        return (
+            "Barbeiro não encontrado.",
+            404
+        )
+
+
     barbeiro_id = emerson["id"]
 
 
     # ======================================================
-    # POST
+    # POST - CRIAR AGENDAMENTO
     # ======================================================
 
     if request.method == "POST":
@@ -723,13 +800,6 @@ def agendar():
             "telefone",
             ""
         ).strip()
-
-
-        telefone_numeros = (
-            normalizar_telefone(
-                telefone
-            )
-        )
 
 
         servico_id = request.form.get(
@@ -766,8 +836,15 @@ def agendar():
             )
 
 
+        telefone_numeros = (
+            normalizar_telefone(
+                telefone
+            )
+        )
+
+
         # ==================================================
-        # VALIDAR TELEFONE
+        # VALIDAÇÃO DO CELULAR
         # ==================================================
 
         if not telefone_brasileiro_plausivel(
@@ -777,8 +854,8 @@ def agendar():
             return redirect(
                 url_for(
                     "agendar",
-                    servico=servico_id,
                     data=data_agendamento,
+                    servico=servico_id,
                     telefone_invalido="1"
                 )
             )
@@ -815,13 +892,18 @@ def agendar():
 
             cursor = banco.execute("""
                 INSERT INTO agendamentos (
+
                     cliente,
                     telefone,
+
                     barbeiro_id,
                     servico_id,
+
                     data,
                     horario,
+
                     status
+
                 )
 
                 VALUES (
@@ -837,8 +919,10 @@ def agendar():
 
                 cliente,
                 telefone_numeros,
+
                 barbeiro_id,
                 servico_id,
+
                 data_agendamento,
                 horario
 
@@ -881,8 +965,7 @@ def agendar():
         return redirect(
             url_for(
                 "confirmacao",
-                agendamento_id=
-                    agendamento_id
+                agendamento_id=agendamento_id
             )
         )
 
@@ -951,11 +1034,9 @@ def agendar():
 
         if dia_selecionado:
 
-            if (
-                dia_selecionado[
-                    "lotado"
-                ]
-            ):
+            if dia_selecionado[
+                "lotado"
+            ]:
 
                 mostrar_lotado = True
 
@@ -1006,10 +1087,12 @@ def agendar():
 
 
 # ==========================================================
-# API - HORÁRIOS SEM RECARREGAR A PÁGINA
+# API - HORÁRIOS
 # ==========================================================
 
-@app.route("/api/horarios")
+@app.route(
+    "/api/horarios"
+)
 def api_horarios():
 
     data_agendamento = request.args.get(
@@ -1024,7 +1107,6 @@ def api_horarios():
             data_agendamento,
             "%Y-%m-%d"
         ).date()
-
 
     except ValueError:
 
@@ -1076,7 +1158,9 @@ def api_horarios():
 
     emerson = banco.execute("""
         SELECT id
+
         FROM barbeiros
+
         WHERE nome = ?
     """, (
         "Emerson",
@@ -1163,11 +1247,13 @@ def confirmacao(
         FROM agendamentos
 
         JOIN barbeiros
+
         ON agendamentos.barbeiro_id
         =
         barbeiros.id
 
         JOIN servicos
+
         ON agendamentos.servico_id
         =
         servicos.id
@@ -1241,11 +1327,13 @@ def meus_agendamentos():
         FROM agendamentos
 
         JOIN barbeiros
+
         ON agendamentos.barbeiro_id
         =
         barbeiros.id
 
         JOIN servicos
+
         ON agendamentos.servico_id
         =
         servicos.id
@@ -1253,7 +1341,9 @@ def meus_agendamentos():
         WHERE agendamentos.telefone = ?
 
         ORDER BY
+
             agendamentos.data ASC,
+
             agendamentos.horario ASC
     """, (
         telefone,
@@ -1270,11 +1360,147 @@ def meus_agendamentos():
 
 
 # ==========================================================
+# LOGIN DO ADMIN
+# ==========================================================
+
+@app.route(
+    "/login",
+    methods=[
+        "GET",
+        "POST"
+    ]
+)
+def login():
+
+    # Se já estiver logado,
+    # vai direto para o painel.
+
+    if session.get(
+        "admin_logado"
+    ):
+
+        return redirect(
+            url_for(
+                "admin"
+            )
+        )
+
+
+    erro = None
+
+
+    if request.method == "POST":
+
+        usuario = request.form.get(
+            "usuario",
+            ""
+        ).strip()
+
+
+        senha = request.form.get(
+            "senha",
+            ""
+        )
+
+
+        usuario_correto = (
+            hmac.compare_digest(
+                usuario,
+                ADMIN_USER
+            )
+        )
+
+
+        senha_correta = (
+            hmac.compare_digest(
+                senha,
+                ADMIN_PASSWORD
+            )
+        )
+
+
+        if (
+            usuario_correto
+            and
+            senha_correta
+        ):
+
+            # Limpa sessões anteriores.
+
+            session.clear()
+
+
+            # Marca o administrador
+            # como autenticado.
+
+            session[
+                "admin_logado"
+            ] = True
+
+
+            return redirect(
+                url_for(
+                    "admin"
+                )
+            )
+
+
+        erro = (
+            "Usuário ou senha incorretos."
+        )
+
+
+    return render_template(
+        "login.html",
+        erro=erro
+    )
+
+
+# ==========================================================
+# LOGOUT DO ADMIN
+# ==========================================================
+
+@app.route(
+    "/logout"
+)
+def logout():
+
+    session.pop(
+        "admin_logado",
+        None
+    )
+
+
+    return redirect(
+        url_for(
+            "login"
+        )
+    )
+
+
+# ==========================================================
 # ADMIN
 # ==========================================================
 
-@app.route("/admin")
+@app.route(
+    "/admin"
+)
 def admin():
+
+    # ======================================================
+    # PROTEÇÃO DO PAINEL
+    # ======================================================
+
+    if not session.get(
+        "admin_logado"
+    ):
+
+        return redirect(
+            url_for(
+                "login"
+            )
+        )
+
 
     banco = conectar_banco()
 
@@ -1303,17 +1529,21 @@ def admin():
         FROM agendamentos
 
         JOIN barbeiros
+
         ON agendamentos.barbeiro_id
         =
         barbeiros.id
 
         JOIN servicos
+
         ON agendamentos.servico_id
         =
         servicos.id
 
         ORDER BY
+
             agendamentos.data ASC,
+
             agendamentos.horario ASC
     """).fetchall()
 
